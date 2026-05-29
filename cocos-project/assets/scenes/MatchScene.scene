@@ -1,0 +1,36 @@
+[
+  {
+    "__id__": 1,
+    "__type__": "cc.Scene",
+    "_name": "MatchScene",
+    "_children": [
+      {
+        "__id__": 2
+      }
+    ]
+  },
+  {
+    "__id__": 2,
+    "__type__": "cc.Node",
+    "_name": "Canvas",
+    "_children": [
+      {
+        "__id__": 3
+      }
+    ],
+    "_id": "b3486b41-b4b8-4fb2-bc16-97aaf92cb032"
+  },
+  {
+    "__id__": 3,
+    "__type__": "cc.Node",
+    "_name": "MatchGrid",
+    "_components": [
+      {
+        "__type__": "cc.UITransform"
+      },
+      {
+        "__type__": "Match3GridComponent"
+      }
+    ]
+  }
+]

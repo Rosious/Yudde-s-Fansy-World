@@ -1,0 +1,16 @@
+{
+  "name": "wardrobe-story",
+  "version": "0.1.0",
+  "description": "衣橱物语 - 三消+换装+经营 Cocos Creator 项目",
+  "creator": {
+    "version": "3.8.8",
+    "registry": {
+      "remote": {}
+    },
+    "dependencies": {
+      "localization-editor": "1.0.1",
+      "plugin-import-2x": "1.1.10"
+    }
+  },
+  "uuid": "0040f552-b069-46aa-bc92-43db56baac9a"
+}

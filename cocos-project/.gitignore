@@ -1,0 +1,7 @@
+library/
+temp/
+profiles/
+dist/
+extensions/
+settings/tool-manager.json
+settings/mcp-server.json

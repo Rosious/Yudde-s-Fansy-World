@@ -1,0 +1,36 @@
+[
+  {
+    "__id__": 1,
+    "__type__": "cc.Scene",
+    "_name": "DressRoom",
+    "_children": [
+      {
+        "__id__": 2
+      }
+    ]
+  },
+  {
+    "__id__": 2,
+    "__type__": "cc.Node",
+    "_name": "Canvas",
+    "_children": [
+      {
+        "__id__": 3
+      }
+    ],
+    "_id": "9729864f-39b3-4ba7-b044-37e473efaeb9"
+  },
+  {
+    "__id__": 3,
+    "__type__": "cc.Node",
+    "_name": "DressRoomPanel",
+    "_components": [
+      {
+        "__type__": "cc.UITransform"
+      },
+      {
+        "__type__": "DressRoomPanel"
+      }
+    ]
+  }
+]
