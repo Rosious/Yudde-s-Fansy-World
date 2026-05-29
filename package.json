@@ -1,0 +1,17 @@
+{
+  "name": "yudde-wardrobe-story",
+  "version": "0.1.0",
+  "description": "衣橱物语：萌娃裁缝铺 — Match-3 + Shop Management + Dress-up Game Demo",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "tsc",
+    "lint": "eslint src/ --ext .ts"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.3.0"
+  }
+}
