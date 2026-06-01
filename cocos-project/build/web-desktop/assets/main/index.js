@@ -219,7 +219,7 @@ System.register("chunks:///_virtual/DressRoomPanel.ts", ['./rollupPluginModLoBab
         // ==========================================================
         // 生命周期
         // ==========================================================
-        _proto.onLoad = function onLoad() {
+        _proto.start = function start() {
           // 从全局协调器获取系统实例
           var mgf = MainGameFlow.getInstance();
           this.dressUpManager = mgf.dressUpManager;
@@ -2054,8 +2054,8 @@ System.register("chunks:///_virtual/Match3Engine.ts", ['./rollupPluginModLoBabel
   };
 });
 
-System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Match3Engine.ts', './index7.ts', './EventBus.ts'], function (exports) {
-  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, _asyncToGenerator, _regeneratorRuntime, cclegacy, _decorator, Prefab, CCFloat, CCInteger, instantiate, Vec3, Sprite, Color, resources, SpriteFrame, tween, Component, Match3Engine, ElementType, GameEvent, SpecialType, eventBus;
+System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginModLoBabelHelpers.js', 'cc', './Match3Engine.ts', './index7.ts', './EventBus.ts', './CellComponent.ts'], function (exports) {
+  var _applyDecoratedDescriptor, _inheritsLoose, _initializerDefineProperty, _assertThisInitialized, _asyncToGenerator, _regeneratorRuntime, cclegacy, _decorator, Prefab, CCFloat, CCInteger, Vec3, instantiate, Node, UITransform, Graphics, Sprite, Color, resources, SpriteFrame, tween, Component, Match3Engine, ElementType, GameEvent, SpecialType, eventBus, CellComponent;
   return {
     setters: [function (module) {
       _applyDecoratedDescriptor = module.applyDecoratedDescriptor;
@@ -2070,8 +2070,11 @@ System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginMod
       Prefab = module.Prefab;
       CCFloat = module.CCFloat;
       CCInteger = module.CCInteger;
-      instantiate = module.instantiate;
       Vec3 = module.Vec3;
+      instantiate = module.instantiate;
+      Node = module.Node;
+      UITransform = module.UITransform;
+      Graphics = module.Graphics;
       Sprite = module.Sprite;
       Color = module.Color;
       resources = module.resources;
@@ -2086,6 +2089,8 @@ System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginMod
       SpecialType = module.SpecialType;
     }, function (module) {
       eventBus = module.eventBus;
+    }, function (module) {
+      CellComponent = module.CellComponent;
     }],
     execute: function () {
       var _dec, _dec2, _dec3, _dec4, _dec5, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4;
@@ -2214,8 +2219,8 @@ System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginMod
               var node = (_this$cellNodes$_r$c = (_this$cellNodes$_r = this.cellNodes[_r]) == null ? void 0 : _this$cellNodes$_r[c]) != null ? _this$cellNodes$_r$c : null;
 
               // 首次创建节点
-              if (!node && this.cellPrefab) {
-                var createdNode = instantiate(this.cellPrefab);
+              if (!node) {
+                var createdNode = this.createCellNode();
                 createdNode.parent = this.node;
                 if (!this.cellNodes[_r]) {
                   this.cellNodes[_r] = [];
@@ -2225,19 +2230,44 @@ System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginMod
               }
               if (node) {
                 // 设置位置：x = col * cellSize，y = -row * cellSize（棋盘原点在左上角）
-                node.setPosition(new Vec3(c * this.cellSize, -_r * this.cellSize, 0));
+                var originX = -((this.cols - 1) * this.cellSize) / 2;
+                var originY = (this.rows - 1) * this.cellSize / 2;
+                node.setPosition(new Vec3(originX + c * this.cellSize, originY - _r * this.cellSize, 0));
 
                 // 更新棋子精灵显示
                 this.updateCellSprite(node, cell);
 
                 // 更新 CellComponent 数据
-                var cellComp = node.getComponent('CellComponent');
-                if (cellComp) {
-                  cellComp.setup(_r, c, cell.type);
-                }
+                var cellComp = this.ensureCellComponent(node);
+                cellComp.setup(_r, c, cell.type);
               }
             }
           }
+        };
+        _proto.createCellNode = function createCellNode() {
+          if (this.cellPrefab) {
+            return instantiate(this.cellPrefab);
+          }
+          var node = new Node('Cell');
+          var transform = node.addComponent(UITransform);
+          var size = Math.max(12, this.cellSize - 8);
+          transform.setContentSize(size, size);
+          node.addComponent(Graphics);
+          node.addComponent(CellComponent);
+          return node;
+        };
+        _proto.ensureCellComponent = function ensureCellComponent(node) {
+          var transform = node.getComponent(UITransform);
+          if (!transform) {
+            transform = node.addComponent(UITransform);
+          }
+          var size = Math.max(12, this.cellSize - 8);
+          transform.setContentSize(size, size);
+          var cellComp = node.getComponent(CellComponent);
+          if (!cellComp) {
+            cellComp = node.addComponent(CellComponent);
+          }
+          return cellComp;
         }
 
         /**
@@ -2252,18 +2282,24 @@ System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginMod
          */;
         _proto.updateCellSprite = function updateCellSprite(node, cell) {
           var sprite = node.getComponent(Sprite);
-          if (!sprite) return;
-
           // 根据棋子类型动态加载对应精灵帧
           if (!cell.type) {
-            sprite.spriteFrame = null;
-            sprite.color = new Color(255, 255, 255, 0);
+            var _node$getComponent;
+            if (sprite) {
+              sprite.spriteFrame = null;
+              sprite.color = new Color(255, 255, 255, 0);
+            }
+            (_node$getComponent = node.getComponent(Graphics)) == null || _node$getComponent.clear();
             return;
           }
+          this.drawFallbackCell(node, cell);
+          if (!sprite) return;
           var path = this.getElementTexturePath(cell.type);
           resources.load(path, SpriteFrame, function (err, spriteFrame) {
             if (!err && spriteFrame && sprite.isValid) {
+              var _node$getComponent2;
               sprite.spriteFrame = spriteFrame;
+              (_node$getComponent2 = node.getComponent(Graphics)) == null || _node$getComponent2.clear();
             }
           });
 
@@ -2282,6 +2318,36 @@ System.register("chunks:///_virtual/Match3GridComponent.ts", ['./rollupPluginMod
          * @param special - 特殊道具类型
          * @returns 对应颜色
          */;
+        _proto.drawFallbackCell = function drawFallbackCell(node, cell) {
+          var _node$getComponent3;
+          var graphics = (_node$getComponent3 = node.getComponent(Graphics)) != null ? _node$getComponent3 : node.addComponent(Graphics);
+          var size = Math.max(12, this.cellSize - 8);
+          var half = size / 2;
+          graphics.clear();
+          graphics.fillColor = this.getElementColor(cell.type);
+          graphics.rect(-half, -half, size, size);
+          graphics.fill();
+          graphics.lineWidth = cell.special !== SpecialType.NONE ? 5 : 2;
+          graphics.strokeColor = cell.special !== SpecialType.NONE ? this.getSpecialColor(cell.special) : new Color(255, 255, 255, 220);
+          graphics.rect(-half, -half, size, size);
+          graphics.stroke();
+        };
+        _proto.getElementColor = function getElementColor(type) {
+          switch (type) {
+            case ElementType.LINE:
+              return new Color(231, 76, 60, 255);
+            case ElementType.BUTTON:
+              return new Color(52, 152, 219, 255);
+            case ElementType.SCISSORS:
+              return new Color(46, 204, 113, 255);
+            case ElementType.TAPE:
+              return new Color(241, 196, 15, 255);
+            case ElementType.SEWING:
+              return new Color(155, 89, 182, 255);
+            default:
+              return new Color(149, 165, 166, 255);
+          }
+        };
         _proto.getElementTexturePath = function getElementTexturePath(type) {
           switch (type) {
             case ElementType.LINE:
@@ -3216,7 +3282,7 @@ System.register("chunks:///_virtual/ShopPanel.ts", ['./rollupPluginModLoBabelHel
         // ==========================================================
         // 生命周期
         // ==========================================================
-        _proto.onLoad = function onLoad() {
+        _proto.start = function start() {
           // 从全局协调器获取系统实例
           var mgf = MainGameFlow.getInstance();
           this.inventorySystem = mgf.inventorySystem;

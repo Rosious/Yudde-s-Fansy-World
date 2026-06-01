@@ -86,7 +86,7 @@ export class DressRoomPanel extends Component {
     // 生命周期
     // ==========================================================
 
-    onLoad(): void {
+    start(): void {
         // 从全局协调器获取系统实例
         const mgf = MainGameFlow.getInstance();
         this.dressUpManager = mgf.dressUpManager;

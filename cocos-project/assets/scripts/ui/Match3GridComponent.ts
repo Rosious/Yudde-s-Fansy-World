@@ -18,6 +18,8 @@ import {
     Color,
     Sprite,
     SpriteFrame,
+    UITransform,
+    Graphics,
     tween,
     resources,
     CCFloat,
@@ -27,6 +29,7 @@ import { Match3Engine } from '../systems/match3/Match3Engine';
 import { ElementType, SpecialType, GameEvent } from '../types';
 import type { Cell, GridConfig } from '../types';
 import { eventBus } from '../core/EventBus';
+import { CellComponent } from './CellComponent';
 
 const { ccclass, property } = _decorator;
 
@@ -141,8 +144,8 @@ export class Match3GridComponent extends Component {
                 let node = this.cellNodes[r]?.[c] ?? null;
 
                 // 首次创建节点
-                if (!node && this.cellPrefab) {
-                    const createdNode = instantiate(this.cellPrefab);
+                if (!node) {
+                    const createdNode = this.createCellNode();
                     createdNode.parent = this.node;
                     if (!this.cellNodes[r]) {
                         this.cellNodes[r] = [];
@@ -153,19 +156,50 @@ export class Match3GridComponent extends Component {
 
                 if (node) {
                     // 设置位置：x = col * cellSize，y = -row * cellSize（棋盘原点在左上角）
-                    node.setPosition(new Vec3(c * this.cellSize, -r * this.cellSize, 0));
+                    const originX = -((this.cols - 1) * this.cellSize) / 2;
+                    const originY = ((this.rows - 1) * this.cellSize) / 2;
+                    node.setPosition(new Vec3(originX + c * this.cellSize, originY - r * this.cellSize, 0));
 
                     // 更新棋子精灵显示
                     this.updateCellSprite(node, cell);
 
                     // 更新 CellComponent 数据
-                    const cellComp = node.getComponent('CellComponent') as any;
-                    if (cellComp) {
-                        cellComp.setup(r, c, cell.type);
-                    }
+                    const cellComp = this.ensureCellComponent(node);
+                    cellComp.setup(r, c, cell.type);
                 }
             }
         }
+    }
+
+    private createCellNode(): Node {
+        if (this.cellPrefab) {
+            return instantiate(this.cellPrefab);
+        }
+
+        const node = new Node('Cell');
+        const transform = node.addComponent(UITransform);
+        const size = Math.max(12, this.cellSize - 8);
+        transform.setContentSize(size, size);
+        node.addComponent(Graphics);
+        node.addComponent(CellComponent);
+        return node;
+    }
+
+    private ensureCellComponent(node: Node): CellComponent {
+        let transform = node.getComponent(UITransform);
+        if (!transform) {
+            transform = node.addComponent(UITransform);
+        }
+
+        const size = Math.max(12, this.cellSize - 8);
+        transform.setContentSize(size, size);
+
+        let cellComp = node.getComponent(CellComponent);
+        if (!cellComp) {
+            cellComp = node.addComponent(CellComponent);
+        }
+
+        return cellComp;
     }
 
     /**
@@ -180,19 +214,25 @@ export class Match3GridComponent extends Component {
      */
     updateCellSprite(node: Node, cell: Cell): void {
         const sprite = node.getComponent(Sprite);
-        if (!sprite) return;
-
         // 根据棋子类型动态加载对应精灵帧
         if (!cell.type) {
-            sprite.spriteFrame = null;
-            sprite.color = new Color(255, 255, 255, 0);
+            if (sprite) {
+                sprite.spriteFrame = null;
+                sprite.color = new Color(255, 255, 255, 0);
+            }
+            node.getComponent(Graphics)?.clear();
             return;
         }
+
+        this.drawFallbackCell(node, cell);
+
+        if (!sprite) return;
 
         const path = this.getElementTexturePath(cell.type);
         resources.load(path, SpriteFrame, (err, spriteFrame) => {
             if (!err && spriteFrame && sprite.isValid) {
                 sprite.spriteFrame = spriteFrame;
+                node.getComponent(Graphics)?.clear();
             }
         });
 
@@ -211,6 +251,40 @@ export class Match3GridComponent extends Component {
      * @param special - 特殊道具类型
      * @returns 对应颜色
      */
+    private drawFallbackCell(node: Node, cell: Cell): void {
+        const graphics = node.getComponent(Graphics) ?? node.addComponent(Graphics);
+        const size = Math.max(12, this.cellSize - 8);
+        const half = size / 2;
+
+        graphics.clear();
+        graphics.fillColor = this.getElementColor(cell.type);
+        graphics.rect(-half, -half, size, size);
+        graphics.fill();
+        graphics.lineWidth = cell.special !== SpecialType.NONE ? 5 : 2;
+        graphics.strokeColor = cell.special !== SpecialType.NONE
+            ? this.getSpecialColor(cell.special)
+            : new Color(255, 255, 255, 220);
+        graphics.rect(-half, -half, size, size);
+        graphics.stroke();
+    }
+
+    private getElementColor(type: ElementType): Color {
+        switch (type) {
+            case ElementType.LINE:
+                return new Color(231, 76, 60, 255);
+            case ElementType.BUTTON:
+                return new Color(52, 152, 219, 255);
+            case ElementType.SCISSORS:
+                return new Color(46, 204, 113, 255);
+            case ElementType.TAPE:
+                return new Color(241, 196, 15, 255);
+            case ElementType.SEWING:
+                return new Color(155, 89, 182, 255);
+            default:
+                return new Color(149, 165, 166, 255);
+        }
+    }
+
     private getElementTexturePath(type: ElementType): string {
         switch (type) {
             case ElementType.LINE:

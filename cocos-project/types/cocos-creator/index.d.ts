@@ -99,6 +99,16 @@ declare module 'cc' {
         contentSize: { width: number; height: number };
     }
 
+    export class Graphics extends Component {
+        fillColor: Color;
+        strokeColor: Color;
+        lineWidth: number;
+        clear(): void;
+        rect(x: number, y: number, width: number, height: number): void;
+        fill(): void;
+        stroke(): void;
+    }
+
     export class Color {
         constructor(r?: number, g?: number, b?: number, a?: number);
         r: number;
