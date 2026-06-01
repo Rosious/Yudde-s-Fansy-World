@@ -20,11 +20,11 @@ import {
     Color,
 } from 'cc';
 import { MainGameFlow } from './MainGameFlow';
-import { OrderManager } from '../../../../src/systems/order/OrderManager';
-import { InventorySystem } from '../../../../src/systems/inventory/InventorySystem';
-import { eventBus } from '../../../../src/core/EventBus';
-import { GameEvent } from '../../../../src/types';
-import type { Order, OrderRequirement } from '../../../../src/types';
+import { OrderManager } from '../systems/order/OrderManager';
+import { InventorySystem } from '../systems/inventory/InventorySystem';
+import { eventBus } from '../core/EventBus';
+import { GameEvent } from '../types';
+import type { Order, OrderRequirement } from '../types';
 
 const { ccclass, property } = _decorator;
 

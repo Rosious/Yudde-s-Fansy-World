@@ -11,9 +11,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { eventBus } from '../../core/EventBus';
-import { GameEvent } from '../../core/types';
-import type { SaveData, InventoryItem, Order } from '../../core/types';
-import type { DressPart } from '../../core/types';
+import { GameEvent } from '../../types';
+import type { SaveData, InventoryItem, Order } from '../../types';
+import type { DressPart } from '../../types';
 
 /** 存档文件存放目录 */
 const SAVE_DIR = path.resolve('D:/Yudde-Demo/saves');

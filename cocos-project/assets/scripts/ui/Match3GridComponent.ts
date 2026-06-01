@@ -20,11 +20,13 @@ import {
     SpriteFrame,
     tween,
     resources,
+    CCFloat,
+    CCInteger,
 } from 'cc';
-import { Match3Engine } from '../../../../src/systems/match3/Match3Engine';
-import { ElementType, SpecialType, GameEvent } from '../../../../src/types';
-import type { Cell, GridConfig } from '../../../../src/types';
-import { eventBus } from '../../../../src/core/EventBus';
+import { Match3Engine } from '../systems/match3/Match3Engine';
+import { ElementType, SpecialType, GameEvent } from '../types';
+import type { Cell, GridConfig } from '../types';
+import { eventBus } from '../core/EventBus';
 
 const { ccclass, property } = _decorator;
 
@@ -46,15 +48,15 @@ export class Match3GridComponent extends Component {
     cellPrefab: Prefab | null = null;
 
     /** 单个棋子大小（像素） */
-    @property({ type: Number, tooltip: '单个棋子边长（像素）' })
+    @property({ type: CCFloat, tooltip: '单个棋子边长（像素）' })
     cellSize: number = 80;
 
     /** 棋盘行数 */
-    @property({ type: Number, tooltip: '棋盘行数' })
+    @property({ type: CCInteger, tooltip: '棋盘行数' })
     rows: number = 8;
 
     /** 棋盘列数 */
-    @property({ type: Number, tooltip: '棋盘列数' })
+    @property({ type: CCInteger, tooltip: '棋盘列数' })
     cols: number = 8;
 
     // ---- 私有成员 ----

@@ -23,10 +23,10 @@ import {
     Vec3,
 } from 'cc';
 import { MainGameFlow } from './MainGameFlow';
-import { DressUpManager } from '../../../../src/systems/dressup/DressUpManager';
-import { eventBus } from '../../../../src/core/EventBus';
-import { DressPart, StyleTag, GameEvent } from '../../../../src/types';
-import type { DressAttachment } from '../../../../src/types';
+import { DressUpManager } from '../systems/dressup/DressUpManager';
+import { eventBus } from '../core/EventBus';
+import { DressPart, StyleTag, GameEvent } from '../types';
+import type { DressAttachment } from '../types';
 
 const { ccclass, property } = _decorator;
 

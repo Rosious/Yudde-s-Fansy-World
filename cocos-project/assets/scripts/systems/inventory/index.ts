@@ -1,0 +1,1 @@
+export { InventorySystem } from './InventorySystem';

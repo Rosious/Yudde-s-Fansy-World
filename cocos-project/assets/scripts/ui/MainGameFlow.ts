@@ -7,9 +7,9 @@
 // ============================================================
 
 import { _decorator, Component, director } from 'cc';
-import { InventorySystem } from '../../../../src/systems/inventory/InventorySystem';
-import { OrderManager } from '../../../../src/systems/order/OrderManager';
-import { DressUpManager } from '../../../../src/systems/dressup/DressUpManager';
+import { InventorySystem } from '../systems/inventory/InventorySystem';
+import { OrderManager } from '../systems/order/OrderManager';
+import { DressUpManager } from '../systems/dressup/DressUpManager';
 
 const { ccclass, property } = _decorator;
 

@@ -9,7 +9,7 @@
 //   - style:bonus_changed → Buff 变化时发射
 // ============================================================
 
-import { DressPart, DressAttachment, StyleTag, MatchBuff, GameEvent } from '../../core/types';
+import { DressPart, DressAttachment, StyleTag, MatchBuff, GameEvent } from '../../types';
 import { eventBus } from '../../core/EventBus';
 
 /** 扩展 DressAttachment，支持连衣裙标记 */

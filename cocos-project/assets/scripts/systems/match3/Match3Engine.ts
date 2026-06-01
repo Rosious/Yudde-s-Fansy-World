@@ -11,8 +11,8 @@ import {
   SpecialType,
   GridConfig,
   GameEvent,
-} from '../../core/types';
-import { eventBus } from '../../core/EventBus';
+} from '../../types';
+import { eventBus } from '../../core';
 
 /** 位置坐标（内部用） */
 interface Pos {
