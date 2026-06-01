@@ -7,8 +7,7 @@
 // save/load 通过文件 I/O 完成持久化，支持多槽位。
 // ============================================================
 
-import * as fs from 'fs';
-import * as path from 'path';
+import { sys } from 'cc';
 
 import { eventBus } from '../../core/EventBus';
 import { GameEvent } from '../../types';
@@ -16,7 +15,7 @@ import type { SaveData, InventoryItem, Order } from '../../types';
 import type { DressPart } from '../../types';
 
 /** 存档文件存放目录 */
-const SAVE_DIR = path.resolve('D:/Yudde-Demo/saves');
+const SAVE_KEY_PREFIX = 'wardrobe-story:save:';
 
 /** 默认初始存档数据 */
 function createDefaultSaveData(): SaveData {
@@ -69,7 +68,7 @@ export class SaveManager {
     this.ensureSaveDir();
     const filePath = this.slotPath(slot);
     const json = JSON.stringify(this.data, null, 2);
-    fs.writeFileSync(filePath, json, 'utf-8');
+    sys.localStorage.setItem(filePath, json);
     eventBus.emit(GameEvent.GAME_SAVED);
   }
 
@@ -81,11 +80,11 @@ export class SaveManager {
    */
   load(slot: number = 0): SaveData | null {
     const filePath = this.slotPath(slot);
-    if (!fs.existsSync(filePath)) {
+    const raw = sys.localStorage.getItem(filePath);
+    if (!raw) {
       return null;
     }
     try {
-      const raw = fs.readFileSync(filePath, 'utf-8');
       const parsed: SaveData = JSON.parse(raw);
       eventBus.emit(GameEvent.GAME_LOADED, parsed);
       return parsed;
@@ -143,12 +142,12 @@ export class SaveManager {
 
   /** 确保存档目录存在 */
   private ensureSaveDir(): void {
-    fs.mkdirSync(SAVE_DIR, { recursive: true });
+    // localStorage needs no directory preparation.
   }
 
   /** 返回指定槽位的文件路径 */
   private slotPath(slot: number): string {
-    return path.join(SAVE_DIR, `slot_${slot}.json`);
+    return `${SAVE_KEY_PREFIX}${slot}`;
   }
 
   /**

@@ -140,6 +140,9 @@ declare module 'cc' {
         height: number;
     }
 
+    export const CCFloat: NumberConstructor;
+    export const CCInteger: NumberConstructor;
+
     export class Rect {
         constructor(x?: number, y?: number, width?: number, height?: number);
         x: number;
@@ -161,6 +164,14 @@ declare module 'cc' {
     export const director: {
         addPersistRootNode(node: Node): void;
         loadScene(name: string): void;
+    };
+
+    export const sys: {
+        localStorage: {
+            getItem(key: string): string | null;
+            setItem(key: string, value: string): void;
+            removeItem(key: string): void;
+        };
     };
 
     export interface Tween<T> {
