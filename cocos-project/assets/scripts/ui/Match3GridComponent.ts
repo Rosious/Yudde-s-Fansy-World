@@ -16,6 +16,7 @@ import {
     instantiate,
     Vec3,
     Color,
+    Button,
     Sprite,
     SpriteFrame,
     UITransform,
@@ -26,8 +27,8 @@ import {
     CCInteger,
 } from 'cc';
 import { Match3Engine } from '../systems/match3/Match3Engine';
-import { ElementType, SpecialType, GameEvent } from '../types';
-import type { Cell, GridConfig } from '../types';
+import { ElementType, SpecialType, GameEvent } from '../core/types';
+import type { Cell, GridConfig } from '../core/types';
 import { eventBus } from '../core/EventBus';
 import { CellComponent } from './CellComponent';
 
@@ -178,8 +179,11 @@ export class Match3GridComponent extends Component {
 
         const node = new Node('Cell');
         const transform = node.addComponent(UITransform);
-        const size = Math.max(12, this.cellSize - 8);
+        const size = Math.max(12, this.cellSize);
         transform.setContentSize(size, size);
+        const button = node.addComponent(Button);
+        button.interactable = true;
+        button.target = node;
         node.addComponent(Graphics);
         node.addComponent(CellComponent);
         return node;
@@ -191,8 +195,12 @@ export class Match3GridComponent extends Component {
             transform = node.addComponent(UITransform);
         }
 
-        const size = Math.max(12, this.cellSize - 8);
+        const size = Math.max(12, this.cellSize);
         transform.setContentSize(size, size);
+
+        const button = node.getComponent(Button) ?? node.addComponent(Button);
+        button.interactable = true;
+        button.target = node;
 
         let cellComp = node.getComponent(CellComponent);
         if (!cellComp) {
@@ -220,7 +228,7 @@ export class Match3GridComponent extends Component {
                 sprite.spriteFrame = null;
                 sprite.color = new Color(255, 255, 255, 0);
             }
-            node.getComponent(Graphics)?.clear();
+            this.clearFallbackCell(node);
             return;
         }
 
@@ -232,7 +240,7 @@ export class Match3GridComponent extends Component {
         resources.load(path, SpriteFrame, (err, spriteFrame) => {
             if (!err && spriteFrame && sprite.isValid) {
                 sprite.spriteFrame = spriteFrame;
-                node.getComponent(Graphics)?.clear();
+                this.clearFallbackCell(node);
             }
         });
 
@@ -252,7 +260,7 @@ export class Match3GridComponent extends Component {
      * @returns 对应颜色
      */
     private drawFallbackCell(node: Node, cell: Cell): void {
-        const graphics = node.getComponent(Graphics) ?? node.addComponent(Graphics);
+        const graphics = this.getFallbackGraphics(node);
         const size = Math.max(12, this.cellSize - 8);
         const half = size / 2;
 
@@ -266,6 +274,41 @@ export class Match3GridComponent extends Component {
             : new Color(255, 255, 255, 220);
         graphics.rect(-half, -half, size, size);
         graphics.stroke();
+    }
+
+    private getFallbackGraphics(node: Node): Graphics {
+        const fallbackName = '__CellFallbackGraphic';
+        let fallbackNode = node.getChildByName(fallbackName);
+
+        if (!fallbackNode) {
+            fallbackNode = new Node(fallbackName);
+            (fallbackNode as any).layer = (node as any).layer;
+            fallbackNode.parent = node;
+        }
+
+        fallbackNode.active = true;
+        (fallbackNode as any).layer = (node as any).layer;
+
+        let transform = fallbackNode.getComponent(UITransform);
+        if (!transform) {
+            transform = fallbackNode.addComponent(UITransform);
+        }
+
+        const size = Math.max(12, this.cellSize - 8);
+        transform.setContentSize(size, size);
+
+        return fallbackNode.getComponent(Graphics) ?? fallbackNode.addComponent(Graphics);
+    }
+
+    private clearFallbackCell(node: Node): void {
+        const fallbackNode = node.getChildByName('__CellFallbackGraphic');
+        if (!fallbackNode) {
+            node.getComponent(Graphics)?.clear();
+            return;
+        }
+
+        fallbackNode.getComponent(Graphics)?.clear();
+        fallbackNode.active = false;
     }
 
     private getElementColor(type: ElementType): Color {

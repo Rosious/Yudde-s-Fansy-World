@@ -20,13 +20,13 @@ import {
     resources,
     SpriteFrame,
     Color,
-    Vec3,
+    UITransform,
 } from 'cc';
 import { MainGameFlow } from './MainGameFlow';
 import { DressUpManager } from '../systems/dressup/DressUpManager';
 import { eventBus } from '../core/EventBus';
-import { DressPart, StyleTag, GameEvent } from '../types';
-import type { DressAttachment } from '../types';
+import { DressPart, StyleTag, GameEvent } from '../core/types';
+import type { DressAttachment } from '../core/types';
 
 const { ccclass, property } = _decorator;
 
@@ -274,12 +274,10 @@ export class DressRoomPanel extends Component {
             const part = partMap[child.name];
             if (!part) continue;
 
-            const btn = child.getComponent(Button);
-            if (btn) {
-                btn.node.on(Button.EventType.CLICK, () => {
-                    this.switchTab(part);
-                }, this);
-            }
+            const btn = this.ensureButton(child, 120, 44);
+            btn.node.on(Button.EventType.CLICK, () => {
+                this.switchTab(part);
+            }, this);
         }
     }
 
@@ -368,7 +366,8 @@ export class DressRoomPanel extends Component {
         } else {
             // 动态创建简易节点（无预制体时的后备方案）
             itemNode = new Node('Item_' + attachment.id);
-            itemNode.addComponent(Button);
+            const transform = itemNode.addComponent(UITransform);
+            transform.setContentSize(220, 48);
             const labelComp = itemNode.addComponent(Label);
             labelComp.string = `${attachment.id} [${attachment.style}]`;
             labelComp.fontSize = 20;
@@ -395,12 +394,37 @@ export class DressRoomPanel extends Component {
         }
 
         // 绑定点击事件
-        const btn = itemNode.getComponent(Button);
-        if (btn) {
-            btn.node.on(Button.EventType.CLICK, () => {
-                this.onItemClick(attachment);
-            }, this);
+        const btn = this.getOrCreateButton(itemNode, 220, 48);
+        btn.node.on(Button.EventType.CLICK, () => {
+            this.onItemClick(attachment);
+        }, this);
+    }
+
+    private ensureButton(node: Node, width: number, height: number): Button {
+        let transform = node.getComponent(UITransform);
+        if (!transform) {
+            transform = node.addComponent(UITransform);
         }
+
+        const size = transform.contentSize;
+        if (!size || size.width <= 0 || size.height <= 0) {
+            transform.setContentSize(width, height);
+        }
+
+        const button = node.getComponent(Button) ?? node.addComponent(Button);
+        button.interactable = true;
+        button.target = node;
+        return button;
+    }
+
+    private getOrCreateButton(node: Node, width: number, height: number): Button {
+        const existingButton = node.getComponent(Button) ?? node.getComponentInChildren(Button);
+        if (existingButton) {
+            this.ensureButton(existingButton.node, width, height);
+            return existingButton;
+        }
+
+        return this.ensureButton(node, width, height);
     }
 
     // ==========================================================

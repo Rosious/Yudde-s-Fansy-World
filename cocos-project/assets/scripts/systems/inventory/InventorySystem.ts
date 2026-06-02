@@ -6,8 +6,8 @@
 // ============================================================
 
 import { eventBus } from '../../core/EventBus';
-import { GameEvent } from '../../types';
-import type { InventoryItem } from '../../types';
+import { GameEvent } from '../../core/types';
+import type { InventoryItem } from '../../core/types';
 
 /**
  * 通用背包系统。

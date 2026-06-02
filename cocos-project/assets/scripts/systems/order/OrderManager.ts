@@ -7,8 +7,8 @@
 // ============================================================
 
 import { eventBus } from '../../core/EventBus';
-import { GameEvent } from '../../types';
-import type { Order, OrderRequirement } from '../../types';
+import { GameEvent } from '../../core/types';
+import type { Order, OrderRequirement } from '../../core/types';
 
 /** 材料池：随机抽取 */
 const MATERIAL_POOL = ['LINE', 'BUTTON', 'SCISSORS', 'TAPE', 'SEWING'];

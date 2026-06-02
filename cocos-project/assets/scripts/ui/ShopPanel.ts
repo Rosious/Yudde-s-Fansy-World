@@ -18,13 +18,14 @@ import {
     Sprite,
     resources,
     Color,
+    UITransform,
 } from 'cc';
 import { MainGameFlow } from './MainGameFlow';
 import { OrderManager } from '../systems/order/OrderManager';
 import { InventorySystem } from '../systems/inventory/InventorySystem';
 import { eventBus } from '../core/EventBus';
-import { GameEvent } from '../types';
-import type { Order, OrderRequirement } from '../types';
+import { GameEvent } from '../core/types';
+import type { Order, OrderRequirement } from '../core/types';
 
 const { ccclass, property } = _decorator;
 
@@ -167,12 +168,53 @@ export class ShopPanel extends Component {
         }
 
         // ---- 提交按钮 ----
-        const submitBtn = cardNode.getChildByName('SubmitBtn')?.getComponent(Button);
-        if (submitBtn) {
-            submitBtn.node.on(Button.EventType.CLICK, () => {
-                this.onSubmitOrder(order.orderId);
-            }, this);
+        const submitNode = this.findChildByName(cardNode, 'SubmitBtn');
+        this.bindButtonClick(submitNode, () => {
+            this.onSubmitOrder(order.orderId);
+        }, 'SubmitBtn');
+    }
+
+    private bindButtonClick(buttonNode: Node | null, handler: () => void, debugName: string): void {
+        if (!buttonNode) {
+            console.warn(`[ShopPanel] ${debugName} not found on order card.`);
+            return;
         }
+
+        const button = this.ensureButton(buttonNode, 140, 44);
+        button.node.on(Button.EventType.CLICK, handler, this);
+    }
+
+    private ensureButton(node: Node, width: number, height: number): Button {
+        let transform = node.getComponent(UITransform);
+        if (!transform) {
+            transform = node.addComponent(UITransform);
+        }
+
+        const size = transform.contentSize;
+        if (!size || size.width <= 0 || size.height <= 0) {
+            transform.setContentSize(width, height);
+        }
+
+        const button = node.getComponent(Button) ?? node.addComponent(Button);
+        button.interactable = true;
+        button.target = node;
+        return button;
+    }
+
+    private findChildByName(root: Node, name: string): Node | null {
+        const directChild = root.getChildByName(name);
+        if (directChild) {
+            return directChild;
+        }
+
+        for (const child of root.children) {
+            const found = this.findChildByName(child, name);
+            if (found) {
+                return found;
+            }
+        }
+
+        return null;
     }
 
     /**

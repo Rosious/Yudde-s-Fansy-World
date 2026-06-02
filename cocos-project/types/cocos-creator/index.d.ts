@@ -92,6 +92,16 @@ declare module 'cc' {
         };
     }
 
+    export class Camera extends Component {
+        projection: number;
+        orthoHeight: number;
+    }
+
+    export class Canvas extends Component {
+        cameraComponent: Camera | null;
+        alignCanvasWithScreen: boolean;
+    }
+
     export class UITransform extends Component {
         width: number;
         height: number;
@@ -174,6 +184,7 @@ declare module 'cc' {
     export const director: {
         addPersistRootNode(node: Node): void;
         loadScene(name: string): void;
+        getScene(): Node | null;
     };
 
     export const sys: {

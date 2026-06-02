@@ -10,9 +10,9 @@
 import { sys } from 'cc';
 
 import { eventBus } from '../../core/EventBus';
-import { GameEvent } from '../../types';
-import type { SaveData, InventoryItem, Order } from '../../types';
-import type { DressPart } from '../../types';
+import { GameEvent } from '../../core/types';
+import type { SaveData, InventoryItem, Order } from '../../core/types';
+import type { DressPart } from '../../core/types';
 
 /** 存档文件存放目录 */
 const SAVE_KEY_PREFIX = 'wardrobe-story:save:';

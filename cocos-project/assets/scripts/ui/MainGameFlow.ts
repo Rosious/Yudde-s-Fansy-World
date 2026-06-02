@@ -6,7 +6,7 @@
 // 本节点挂载后即设为持久化节点（场景切换不销毁）。
 // ============================================================
 
-import { _decorator, Component, director } from 'cc';
+import { _decorator, Button, Canvas, Camera, Component, Node, Vec3, director } from 'cc';
 import { InventorySystem } from '../systems/inventory/InventorySystem';
 import { OrderManager } from '../systems/order/OrderManager';
 import { DressUpManager } from '../systems/dressup/DressUpManager';
@@ -70,6 +70,8 @@ export class MainGameFlow extends Component {
         // 注册为单例
         MainGameFlow._instance = this;
 
+        this.configureSceneCamera();
+
         // 设为常驻节点，场景切换不销毁
         director.addPersistRootNode(this.node);
 
@@ -79,6 +81,93 @@ export class MainGameFlow extends Component {
         this.dressUpManager = new DressUpManager();
 
         console.log('[MainGameFlow] 初始化完成，三大系统已就绪。');
+
+        this.bindBottomButtons();
+        this.showPanel('match');
+    }
+
+    private configureSceneCamera(): void {
+        const scene = director.getScene?.() ?? this.node.parent;
+        const cameraNode = scene?.getChildByName('Main Camera');
+        const canvasNode = scene?.getChildByName('Canvas');
+        const camera = cameraNode?.getComponent(Camera);
+        const canvas = canvasNode?.getComponent(Canvas);
+
+        if (!cameraNode || !camera || !canvas) {
+            console.warn('[MainGameFlow] Main Camera or Canvas missing; 2D render setup skipped.');
+            return;
+        }
+
+        cameraNode.setPosition(new Vec3(640, 360, 1000));
+        (cameraNode as any).setRotationFromEuler?.(0, 0, 0);
+        (camera as any).projection = (Camera as any).ProjectionType?.ORTHO ?? 0;
+        (camera as any).orthoHeight = 360;
+        (canvas as any).cameraComponent = camera;
+        (canvas as any).alignCanvasWithScreen = true;
+    }
+
+    private bindBottomButtons(): void {
+        const canvas = this.findCanvasNode();
+        const bottomBar = canvas?.getChildByName('BottomBar');
+        if (!bottomBar) {
+            console.warn('[MainGameFlow] BottomBar not found; bottom navigation skipped.');
+            return;
+        }
+
+        this.bindButton(bottomBar.getChildByName('BtnMatch'), this.onMatchClicked, 'BtnMatch');
+        this.bindButton(bottomBar.getChildByName('BtnShop'), this.onShopClicked, 'BtnShop');
+        this.bindButton(bottomBar.getChildByName('BtnDress'), this.onDressClicked, 'BtnDress');
+    }
+
+    private bindButton(buttonNode: Node | null, handler: () => void, debugName: string): void {
+        if (!buttonNode) {
+            console.warn(`[MainGameFlow] ${debugName} not found.`);
+            return;
+        }
+
+        const button = buttonNode.getComponent(Button) ?? buttonNode.addComponent(Button);
+        button.interactable = true;
+        button.target = buttonNode;
+
+        button.node.off(Button.EventType.CLICK, handler, this);
+        button.node.on(Button.EventType.CLICK, handler, this);
+    }
+
+    private onMatchClicked(): void {
+        this.showPanel('match');
+    }
+
+    private onShopClicked(): void {
+        this.showPanel('shop');
+    }
+
+    private onDressClicked(): void {
+        this.showPanel('dress');
+    }
+
+    private showPanel(activePanel: 'match' | 'shop' | 'dress'): void {
+        const canvas = this.findCanvasNode();
+        if (!canvas) {
+            console.warn('[MainGameFlow] Canvas not found; cannot switch panels.');
+            return;
+        }
+
+        const matchGrid = canvas.getChildByName('MatchGrid');
+        const shopPanel = canvas.getChildByName('ShopPanel');
+        const dressRoomPanel = canvas.getChildByName('DressRoomPanel');
+
+        if (!matchGrid || !shopPanel || !dressRoomPanel) {
+            console.warn('[MainGameFlow] One or more main panels are missing.');
+        }
+
+        if (matchGrid) matchGrid.active = activePanel === 'match';
+        if (shopPanel) shopPanel.active = activePanel === 'shop';
+        if (dressRoomPanel) dressRoomPanel.active = activePanel === 'dress';
+    }
+
+    private findCanvasNode(): Node | null {
+        const scene = director.getScene();
+        return scene?.getChildByName('Canvas') ?? this.node.parent?.getChildByName('Canvas') ?? null;
     }
 
     onDestroy(): void {

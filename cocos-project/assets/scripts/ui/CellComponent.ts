@@ -6,7 +6,7 @@
 // - 处理点击事件并通知父节点 Match3GridComponent
 // ============================================================
 
-import { _decorator, Component, Sprite, Node, EventTouch } from 'cc';
+import { _decorator, Button, Component, Sprite, UITransform } from 'cc';
 
 const { ccclass, property } = _decorator;
 
@@ -33,13 +33,15 @@ export class CellComponent extends Component {
     // ==========================================================
 
     onLoad(): void {
-        // 注册触摸事件
-        this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        // 注册按钮点击事件
+        this.ensureClickable();
+        this.node.off(Button.EventType.CLICK, this.onButtonClick, this);
+        this.node.on(Button.EventType.CLICK, this.onButtonClick, this);
     }
 
     onDestroy(): void {
-        // 清理触摸事件监听
-        this.node.off(Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        // 清理按钮点击事件监听
+        this.node.off(Button.EventType.CLICK, this.onButtonClick, this);
     }
 
     // ==========================================================
@@ -66,15 +68,32 @@ export class CellComponent extends Component {
     // ==========================================================
 
     /**
-     * 触摸结束事件处理。
+     * 确保当前节点有可点击的 UI 命中区域和 Button 组件。
+     */
+    private ensureClickable(): void {
+        let transform = this.node.getComponent(UITransform);
+        if (!transform) {
+            transform = this.node.addComponent(UITransform);
+        }
+
+        const size = transform.contentSize;
+        if (!size || size.width <= 0 || size.height <= 0) {
+            transform.setContentSize(80, 80);
+        }
+
+        const button = this.node.getComponent(Button) ?? this.node.addComponent(Button);
+        button.interactable = true;
+        button.target = this.node;
+    }
+
+    /**
+     * 按钮点击事件处理。
      *
      * 通过字符串获取父节点上的 Match3GridComponent 组件，
      * 并调用其 onCellClicked 方法传递当前棋子的行列坐标。
      * 使用字符串方式避免循环引用问题。
-     *
-     * @param _event - 触摸事件对象（此处未使用）
      */
-    private onTouchEnd(_event: EventTouch): void {
+    private onButtonClick(): void {
         // 通过字符串名获取组件，避免与 Match3GridComponent 产生循环 import
         const grid = this.node.parent?.getComponent('Match3GridComponent');
         if (grid) {
