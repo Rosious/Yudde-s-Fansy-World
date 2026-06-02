@@ -1,7 +1,7 @@
-library/
-temp/
-profiles/
+node_modules/
+build/
 dist/
-extensions/
-settings/tool-manager.json
-settings/mcp-server.json
+.tmp-*
+*.log
+.DS_Store
+Thumbs.db
