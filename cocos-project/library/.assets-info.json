@@ -1,0 +1,468 @@
+{
+  "version": "1.0.1",
+  "map": {
+    "extensions": {
+      "time": 1780291470188.924,
+      "uuid": "bc99c5b6-87fe-43f3-8eae-6f233430b67c"
+    },
+    "prefabs": {
+      "time": 1779967577430.3567,
+      "uuid": "b234d947-8774-42c0-a300-cbe7e1f37cfa"
+    },
+    "resources": {
+      "time": 1780053329641.3662,
+      "uuid": "f9fd0429-7c95-4b1d-8d0c-670310fb0ad5"
+    },
+    "scenes": {
+      "time": 1780296090224.4902,
+      "uuid": "5ae90adf-ed07-4710-80bb-760b12b455e8"
+    },
+    "scripts": {
+      "time": 1780290851713.9714,
+      "uuid": "c9106ca0-9bf7-4c23-a87b-a4982e2d8a28"
+    },
+    "textures": {
+      "time": 1780053824448.176,
+      "uuid": "91b3dfb8-3c23-4537-a094-00466f9b5e3b"
+    },
+    "scripts\\core": {
+      "time": 1780314844617.4844,
+      "uuid": "fabc1238-d97b-4038-a806-5b1cffb02948"
+    },
+    "scripts\\systems": {
+      "time": 1779964776532.3748,
+      "uuid": "4a21f4c9-de22-481a-8a1e-7f507dc920a6"
+    },
+    "scripts\\types": {
+      "time": 1780314844626.4973,
+      "uuid": "b2618820-0784-43c4-af91-be95838929c5"
+    },
+    "scripts\\ui": {
+      "time": 1780314844631.0068,
+      "uuid": "d07e3a4d-ff0e-48ac-a23a-de90c50aca3a"
+    },
+    "textures\\button": {
+      "time": 1779967462743.2507,
+      "uuid": "422a032c-b566-4571-9c1b-de0507843188"
+    },
+    "textures\\button_bg": {
+      "time": 1780053329646.3613,
+      "uuid": "fbe88462-001c-4f18-8634-4458b6c936a3"
+    },
+    "textures\\doll_base": {
+      "time": 1780053329646.3613,
+      "uuid": "241d6a80-6f86-41ce-9187-c70fd2284597"
+    },
+    "textures\\iron": {
+      "time": 1779967462743.2507,
+      "uuid": "2fd7cacc-e416-484c-ab84-189eb31ca842"
+    },
+    "textures\\line": {
+      "time": 1779967462743.2507,
+      "uuid": "478745f8-5694-4d28-a92f-5a08a58a26d1"
+    },
+    "textures\\line_blue": {
+      "time": 1780053329643.3618,
+      "uuid": "274dfe8a-d460-4d4c-a439-75ae351b89d0"
+    },
+    "textures\\line_red": {
+      "time": 1780053329642.3628,
+      "uuid": "3f05e0a0-595d-48c6-bb12-28b0dbb41e80"
+    },
+    "textures\\line_yellow": {
+      "time": 1780053329643.3618,
+      "uuid": "98e9a52a-bc25-43bc-8b32-7d8bf76f8c74"
+    },
+    "textures\\rainbow": {
+      "time": 1779967462744.2498,
+      "uuid": "d36ce0b7-14d9-43d4-8637-826896a8d01b"
+    },
+    "textures\\scissors": {
+      "time": 1779967462744.2498,
+      "uuid": "969f90f4-7f38-4223-b44c-43f06c6db1fc"
+    },
+    "textures\\sewing": {
+      "time": 1779967462744.2498,
+      "uuid": "609ff341-0501-4e52-a1f2-6e66a58c74b2"
+    },
+    "textures\\shuttle": {
+      "time": 1779967462745.2517,
+      "uuid": "5778a7a6-3128-437e-abb0-2c0a35b7e4cb"
+    },
+    "textures\\tape": {
+      "time": 1779967462745.2517,
+      "uuid": "ced7a558-6977-4122-9476-d5f38101078b"
+    },
+    "textures\\ui_bg": {
+      "time": 1780053329646.3613,
+      "uuid": "ff3a02de-2c74-4c60-8f34-bb16e5df9091"
+    },
+    "scripts\\systems\\dressup": {
+      "time": 1780314844618.9868,
+      "uuid": "9e5a509a-f6ef-405c-9e6f-5a91e327ec88"
+    },
+    "scripts\\systems\\inventory": {
+      "time": 1780314844619.991,
+      "uuid": "37af5ac8-403a-4361-a662-15fdb2d2cd6f"
+    },
+    "scripts\\systems\\match3": {
+      "time": 1780314844621.993,
+      "uuid": "006fb3b7-5acb-4c8c-a8b1-2a93eb4d0df1"
+    },
+    "scripts\\systems\\order": {
+      "time": 1780314844622.993,
+      "uuid": "e3df1f24-9801-4803-9d02-37054b46e7ef"
+    },
+    "scripts\\systems\\save": {
+      "time": 1780314844624.4954,
+      "uuid": "8383e8e8-46e9-48e6-9e05-730846c5f925"
+    },
+    "scripts\\core\\EventBus.ts": {
+      "time": 1780314844614.4807,
+      "uuid": "6dee379c-de16-4698-95a5-ab1bf331bb80"
+    },
+    "scripts\\core\\index.ts": {
+      "time": 1780314844615.485,
+      "uuid": "2c7ea9b2-5b17-4ef0-b0a4-1f32159927d9"
+    },
+    "scripts\\core\\types.ts": {
+      "time": 1780314844616.4856,
+      "uuid": "08e138a0-58af-4657-945e-6a74fa233607"
+    },
+    "scripts\\types\\index.ts": {
+      "time": 1780314844625.498,
+      "uuid": "b48c29cb-7555-4a4d-bc25-67a568a507f2"
+    },
+    "scripts\\ui\\CellComponent.ts": {
+      "time": 1780314844626.4973,
+      "uuid": "f8eefc8e-b4c6-44f7-988d-3a69af895277"
+    },
+    "scripts\\ui\\DressRoomPanel.ts": {
+      "time": 1780314844627.4983,
+      "uuid": "d61a64ac-d832-4d53-a537-c5a85bcd82a1"
+    },
+    "scripts\\ui\\MainGameFlow.ts": {
+      "time": 1780314844627.4983,
+      "uuid": "b0c1d50f-c645-4b45-bdf4-0689110514fe"
+    },
+    "scripts\\ui\\Match3GridComponent.ts": {
+      "time": 1780314844629.0022,
+      "uuid": "1b161f1e-0332-4881-8f11-260397d1225f"
+    },
+    "scripts\\ui\\ShopPanel.ts": {
+      "time": 1780314844630.01,
+      "uuid": "cd8f6da8-f431-415e-816e-63472530702e"
+    },
+    "scripts\\systems\\dressup\\DressUpManager.ts": {
+      "time": 1780314844617.4844,
+      "uuid": "5c0dbf78-f0ce-4615-b85d-e3a137b4595a"
+    },
+    "scripts\\systems\\dressup\\index.ts": {
+      "time": 1780314844618.9868,
+      "uuid": "807bfd96-0690-46b2-add1-4f0418def34e"
+    },
+    "scripts\\systems\\inventory\\index.ts": {
+      "time": 1780314844618.9868,
+      "uuid": "b1bcbdda-97ee-46c6-a64e-552c33812565"
+    },
+    "scripts\\systems\\inventory\\InventorySystem.ts": {
+      "time": 1780314844619.991,
+      "uuid": "f0706740-7a1d-487d-b58e-793bf18c8cd5"
+    },
+    "scripts\\systems\\match3\\index.ts": {
+      "time": 1780314844620.9924,
+      "uuid": "2e19fc53-6b63-43a5-a4e8-26896b64edd3"
+    },
+    "scripts\\systems\\match3\\Match3Engine.ts": {
+      "time": 1780314844621.993,
+      "uuid": "67ea2dd0-3b18-4aad-9ada-b3cb24fd2c00"
+    },
+    "scripts\\systems\\order\\index.ts": {
+      "time": 1780314844621.993,
+      "uuid": "2081be46-dac9-4c51-a50c-a3927b1b8423"
+    },
+    "scripts\\systems\\order\\OrderManager.ts": {
+      "time": 1780314844622.993,
+      "uuid": "e845251c-c63f-40d6-ac8b-8b2b6df03692"
+    },
+    "scripts\\systems\\save\\index.ts": {
+      "time": 1780314844623.9907,
+      "uuid": "19dc35d3-1d9f-4251-8621-ef7273cbd0f5"
+    },
+    "scripts\\systems\\save\\SaveManager.ts": {
+      "time": 1780314844624.4954,
+      "uuid": "bceae917-04eb-4c93-960d-2860456dfe6d"
+    },
+    "extensions.meta": {
+      "time": 1780291529268.716
+    },
+    "prefabs.meta": {
+      "time": 1779964776537.392
+    },
+    "resources.meta": {
+      "time": 1780053824453.687
+    },
+    "scenes.meta": {
+      "time": 1779964776537.392
+    },
+    "scripts.meta": {
+      "time": 1779964776537.392
+    },
+    "textures.meta": {
+      "time": 1779964776538.3936
+    },
+    "scripts\\core.meta": {
+      "time": 1779964776538.3936
+    },
+    "scripts\\systems.meta": {
+      "time": 1779964776538.3936
+    },
+    "scripts\\types.meta": {
+      "time": 1780290851725.0027
+    },
+    "scripts\\ui.meta": {
+      "time": 1779964776539.393
+    },
+    "textures\\button.meta": {
+      "time": 1779967462735.25
+    },
+    "textures\\button_bg.meta": {
+      "time": 1780053824453.687
+    },
+    "textures\\doll_base.meta": {
+      "time": 1780053824454.687
+    },
+    "textures\\iron.meta": {
+      "time": 1779967462736.251
+    },
+    "textures\\line.meta": {
+      "time": 1779967462736.251
+    },
+    "textures\\line_blue.meta": {
+      "time": 1780053824455.693
+    },
+    "textures\\line_red.meta": {
+      "time": 1780053824456.6924
+    },
+    "textures\\line_yellow.meta": {
+      "time": 1780053824456.6924
+    },
+    "textures\\rainbow.meta": {
+      "time": 1779967462736.251
+    },
+    "textures\\scissors.meta": {
+      "time": 1779967462737.2505
+    },
+    "textures\\sewing.meta": {
+      "time": 1779967462740.2495
+    },
+    "textures\\shuttle.meta": {
+      "time": 1779967462741.25
+    },
+    "textures\\tape.meta": {
+      "time": 1779967462742.25
+    },
+    "textures\\ui_bg.meta": {
+      "time": 1780053824457.692
+    },
+    "scripts\\systems\\dressup.meta": {
+      "time": 1779964776539.393
+    },
+    "scripts\\systems\\inventory.meta": {
+      "time": 1779964776540.392
+    },
+    "scripts\\systems\\match3.meta": {
+      "time": 1779964776540.392
+    },
+    "scripts\\systems\\order.meta": {
+      "time": 1779964776541.391
+    },
+    "scripts\\systems\\save.meta": {
+      "time": 1779964776541.391
+    },
+    "scripts\\core\\EventBus.ts.meta": {
+      "time": 1780054897579.6326
+    },
+    "scripts\\core\\index.ts.meta": {
+      "time": 1780290851735.518
+    },
+    "scripts\\core\\types.ts.meta": {
+      "time": 1780054897579.6326
+    },
+    "scripts\\types\\index.ts.meta": {
+      "time": 1780290851735.518
+    },
+    "scripts\\ui\\CellComponent.ts.meta": {
+      "time": 1780054897580.6316
+    },
+    "scripts\\ui\\DressRoomPanel.ts.meta": {
+      "time": 1780054897580.6316
+    },
+    "scripts\\ui\\MainGameFlow.ts.meta": {
+      "time": 1780054897581.635
+    },
+    "scripts\\ui\\Match3GridComponent.ts.meta": {
+      "time": 1780054897585.6367
+    },
+    "scripts\\ui\\ShopPanel.ts.meta": {
+      "time": 1780054897586.6367
+    },
+    "scripts\\systems\\dressup\\DressUpManager.ts.meta": {
+      "time": 1780054897586.6367
+    },
+    "scripts\\systems\\dressup\\index.ts.meta": {
+      "time": 1780290851743.028
+    },
+    "scripts\\systems\\inventory\\index.ts.meta": {
+      "time": 1780290851743.028
+    },
+    "scripts\\systems\\inventory\\InventorySystem.ts.meta": {
+      "time": 1780054897587.6357
+    },
+    "scripts\\systems\\match3\\index.ts.meta": {
+      "time": 1780290851744.0293
+    },
+    "scripts\\systems\\match3\\Match3Engine.ts.meta": {
+      "time": 1780054897587.6357
+    },
+    "scripts\\systems\\order\\index.ts.meta": {
+      "time": 1780290851746.029
+    },
+    "scripts\\systems\\order\\OrderManager.ts.meta": {
+      "time": 1780054897588.6353
+    },
+    "scripts\\systems\\save\\index.ts.meta": {
+      "time": 1780290851746.029
+    },
+    "scripts\\systems\\save\\SaveManager.ts.meta": {
+      "time": 1780054897589.6833
+    },
+    "prefabs\\Cell.prefab": {
+      "time": 1780314905843.3818,
+      "uuid": "ef094bf6-cf6b-42b6-b625-914057c527cb"
+    },
+    "scenes\\MainScene.scene": {
+      "time": 1780312420309.307,
+      "uuid": "4a29fe02-2e41-4527-aae7-86e3ab8c709f"
+    },
+    "scripts\\ui\\TASK_MATCH3.md": {
+      "time": 1779963660871.6511,
+      "uuid": "5c16e17b-0995-4ece-8e46-00b167eb1278"
+    },
+    "scripts\\ui\\TASK_UI.md": {
+      "time": 1779963660872.6519,
+      "uuid": "d3526fc2-781d-456e-8c62-c774eb1b906c"
+    },
+    "textures\\button\\spriteFrame.png": {
+      "time": 1780053262373.0193,
+      "uuid": "4a48e774-3bd8-42c3-91a1-a340df3392a5"
+    },
+    "textures\\button_bg\\spriteFrame.png": {
+      "time": 1780053262529.9878,
+      "uuid": "5a29f03b-66e3-4352-b942-3b71707a2be0"
+    },
+    "textures\\doll_base\\spriteFrame.png": {
+      "time": 1780053262525.1345,
+      "uuid": "4db4a7fc-23bc-46bc-a735-bfc87ea5a352"
+    },
+    "textures\\iron\\spriteFrame.png": {
+      "time": 1780053262415.4592,
+      "uuid": "37cd2464-ca70-45b9-839c-62bec6a7f3a0"
+    },
+    "textures\\line\\spriteFrame.png": {
+      "time": 1779967122026.3938,
+      "uuid": "24a39260-e753-4d61-a8c9-ece19fbbcf0d"
+    },
+    "textures\\line_blue\\spriteFrame.png": {
+      "time": 1780053262354.5088,
+      "uuid": "170aa1dd-7e51-4cf3-a035-b1bffcb2e072"
+    },
+    "textures\\line_red\\spriteFrame.png": {
+      "time": 1780053262345.5237,
+      "uuid": "c9c880f5-0c87-451c-bab0-925d01309caf"
+    },
+    "textures\\line_yellow\\spriteFrame.png": {
+      "time": 1780053262364.016,
+      "uuid": "2c65aeb1-953f-471b-9f85-519e3ce9de63"
+    },
+    "textures\\rainbow\\spriteFrame.png": {
+      "time": 1780053262423.4612,
+      "uuid": "73d8a89b-5ce9-4a29-8690-830a25952515"
+    },
+    "textures\\scissors\\spriteFrame.png": {
+      "time": 1780053262381.0325,
+      "uuid": "990180c8-a079-4352-b399-52ee360ea219"
+    },
+    "textures\\sewing\\spriteFrame.png": {
+      "time": 1780053262398.455,
+      "uuid": "2fcb4ee1-48f3-4bde-a315-5fbd86981c8c"
+    },
+    "textures\\shuttle\\spriteFrame.png": {
+      "time": 1780053262406.4592,
+      "uuid": "dceaf9a7-586c-4c29-bc3a-22af184f86ce"
+    },
+    "textures\\tape\\spriteFrame.png": {
+      "time": 1780053262390.0293,
+      "uuid": "da4eca74-673a-4076-bf53-f14750130472"
+    },
+    "textures\\ui_bg\\spriteFrame.png": {
+      "time": 1780053262847.8398,
+      "uuid": "44f5783a-53df-46f0-9053-5ec521264a2c"
+    },
+    "prefabs\\Cell.prefab.meta": {
+      "time": 1780055268073.4358
+    },
+    "scenes\\MainScene.scene.meta": {
+      "time": 1780289983574.9075
+    },
+    "scripts\\ui\\TASK_UI.md.meta": {
+      "time": 1779964778842.0715
+    },
+    "scripts\\ui\\TASK_MATCH3.md.meta": {
+      "time": 1779964778841.3374
+    },
+    "textures\\button\\spriteFrame.png.meta": {
+      "time": 1780054901005.7915
+    },
+    "textures\\iron\\spriteFrame.png.meta": {
+      "time": 1780054901007.7969
+    },
+    "textures\\doll_base\\spriteFrame.png.meta": {
+      "time": 1780054901004.076
+    },
+    "textures\\button_bg\\spriteFrame.png.meta": {
+      "time": 1780054901003.0757
+    },
+    "textures\\line\\spriteFrame.png.meta": {
+      "time": 1780054901009.9888
+    },
+    "textures\\line_blue\\spriteFrame.png.meta": {
+      "time": 1780054901013.988
+    },
+    "textures\\line_red\\spriteFrame.png.meta": {
+      "time": 1780054901013.988
+    },
+    "textures\\rainbow\\spriteFrame.png.meta": {
+      "time": 1780054901016.9883
+    },
+    "textures\\line_yellow\\spriteFrame.png.meta": {
+      "time": 1780054901014.988
+    },
+    "textures\\scissors\\spriteFrame.png.meta": {
+      "time": 1780054901020.5002
+    },
+    "textures\\sewing\\spriteFrame.png.meta": {
+      "time": 1780054901024.5493
+    },
+    "textures\\tape\\spriteFrame.png.meta": {
+      "time": 1780054901023.5493
+    },
+    "textures\\shuttle\\spriteFrame.png.meta": {
+      "time": 1780054901023.5493
+    },
+    "textures\\ui_bg\\spriteFrame.png.meta": {
+      "time": 1780054901025.5493
+    }
+  },
+  "missing": {}
+}

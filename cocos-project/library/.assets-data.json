@@ -1,0 +1,555 @@
+{
+  "bc99c5b6-87fe-43f3-8eae-6f233430b67c": {
+    "url": "db://assets/extensions",
+    "value": {},
+    "versionCode": 1
+  },
+  "b234d947-8774-42c0-a300-cbe7e1f37cfa": {
+    "url": "db://assets/prefabs",
+    "value": {},
+    "versionCode": 1
+  },
+  "f9fd0429-7c95-4b1d-8d0c-670310fb0ad5": {
+    "url": "db://assets/resources",
+    "value": {},
+    "versionCode": 1
+  },
+  "5ae90adf-ed07-4710-80bb-760b12b455e8": {
+    "url": "db://assets/scenes",
+    "value": {},
+    "versionCode": 1
+  },
+  "c9106ca0-9bf7-4c23-a87b-a4982e2d8a28": {
+    "url": "db://assets/scripts",
+    "value": {},
+    "versionCode": 1
+  },
+  "91b3dfb8-3c23-4537-a094-00466f9b5e3b": {
+    "url": "db://assets/textures",
+    "value": {},
+    "versionCode": 1
+  },
+  "fabc1238-d97b-4038-a806-5b1cffb02948": {
+    "url": "db://assets/scripts/core",
+    "value": {},
+    "versionCode": 1
+  },
+  "4a21f4c9-de22-481a-8a1e-7f507dc920a6": {
+    "url": "db://assets/scripts/systems",
+    "value": {},
+    "versionCode": 1
+  },
+  "b2618820-0784-43c4-af91-be95838929c5": {
+    "url": "db://assets/scripts/types",
+    "value": {},
+    "versionCode": 1
+  },
+  "d07e3a4d-ff0e-48ac-a23a-de90c50aca3a": {
+    "url": "db://assets/scripts/ui",
+    "value": {},
+    "versionCode": 1
+  },
+  "422a032c-b566-4571-9c1b-de0507843188": {
+    "url": "db://assets/textures/button",
+    "value": {},
+    "versionCode": 1
+  },
+  "fbe88462-001c-4f18-8634-4458b6c936a3": {
+    "url": "db://assets/textures/button_bg",
+    "value": {},
+    "versionCode": 1
+  },
+  "241d6a80-6f86-41ce-9187-c70fd2284597": {
+    "url": "db://assets/textures/doll_base",
+    "value": {},
+    "versionCode": 1
+  },
+  "2fd7cacc-e416-484c-ab84-189eb31ca842": {
+    "url": "db://assets/textures/iron",
+    "value": {},
+    "versionCode": 1
+  },
+  "478745f8-5694-4d28-a92f-5a08a58a26d1": {
+    "url": "db://assets/textures/line",
+    "value": {},
+    "versionCode": 1
+  },
+  "274dfe8a-d460-4d4c-a439-75ae351b89d0": {
+    "url": "db://assets/textures/line_blue",
+    "value": {},
+    "versionCode": 1
+  },
+  "3f05e0a0-595d-48c6-bb12-28b0dbb41e80": {
+    "url": "db://assets/textures/line_red",
+    "value": {},
+    "versionCode": 1
+  },
+  "98e9a52a-bc25-43bc-8b32-7d8bf76f8c74": {
+    "url": "db://assets/textures/line_yellow",
+    "value": {},
+    "versionCode": 1
+  },
+  "d36ce0b7-14d9-43d4-8637-826896a8d01b": {
+    "url": "db://assets/textures/rainbow",
+    "value": {},
+    "versionCode": 1
+  },
+  "969f90f4-7f38-4223-b44c-43f06c6db1fc": {
+    "url": "db://assets/textures/scissors",
+    "value": {},
+    "versionCode": 1
+  },
+  "609ff341-0501-4e52-a1f2-6e66a58c74b2": {
+    "url": "db://assets/textures/sewing",
+    "value": {},
+    "versionCode": 1
+  },
+  "5778a7a6-3128-437e-abb0-2c0a35b7e4cb": {
+    "url": "db://assets/textures/shuttle",
+    "value": {},
+    "versionCode": 1
+  },
+  "ced7a558-6977-4122-9476-d5f38101078b": {
+    "url": "db://assets/textures/tape",
+    "value": {},
+    "versionCode": 1
+  },
+  "ff3a02de-2c74-4c60-8f34-bb16e5df9091": {
+    "url": "db://assets/textures/ui_bg",
+    "value": {},
+    "versionCode": 1
+  },
+  "9e5a509a-f6ef-405c-9e6f-5a91e327ec88": {
+    "url": "db://assets/scripts/systems/dressup",
+    "value": {},
+    "versionCode": 1
+  },
+  "37af5ac8-403a-4361-a662-15fdb2d2cd6f": {
+    "url": "db://assets/scripts/systems/inventory",
+    "value": {},
+    "versionCode": 1
+  },
+  "006fb3b7-5acb-4c8c-a8b1-2a93eb4d0df1": {
+    "url": "db://assets/scripts/systems/match3",
+    "value": {},
+    "versionCode": 1
+  },
+  "e3df1f24-9801-4803-9d02-37054b46e7ef": {
+    "url": "db://assets/scripts/systems/order",
+    "value": {},
+    "versionCode": 1
+  },
+  "8383e8e8-46e9-48e6-9e05-730846c5f925": {
+    "url": "db://assets/scripts/systems/save",
+    "value": {},
+    "versionCode": 1
+  },
+  "6dee379c-de16-4698-95a5-ab1bf331bb80": {
+    "url": "db://assets/scripts/core/EventBus.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "2c7ea9b2-5b17-4ef0-b0a4-1f32159927d9": {
+    "url": "db://assets/scripts/core/index.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "08e138a0-58af-4657-945e-6a74fa233607": {
+    "url": "db://assets/scripts/core/types.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "b48c29cb-7555-4a4d-bc25-67a568a507f2": {
+    "url": "db://assets/scripts/types/index.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "f8eefc8e-b4c6-44f7-988d-3a69af895277": {
+    "url": "db://assets/scripts/ui/CellComponent.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "d61a64ac-d832-4d53-a537-c5a85bcd82a1": {
+    "url": "db://assets/scripts/ui/DressRoomPanel.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "b0c1d50f-c645-4b45-bdf4-0689110514fe": {
+    "url": "db://assets/scripts/ui/MainGameFlow.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "1b161f1e-0332-4881-8f11-260397d1225f": {
+    "url": "db://assets/scripts/ui/Match3GridComponent.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "cd8f6da8-f431-415e-816e-63472530702e": {
+    "url": "db://assets/scripts/ui/ShopPanel.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "5c0dbf78-f0ce-4615-b85d-e3a137b4595a": {
+    "url": "db://assets/scripts/systems/dressup/DressUpManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "807bfd96-0690-46b2-add1-4f0418def34e": {
+    "url": "db://assets/scripts/systems/dressup/index.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "b1bcbdda-97ee-46c6-a64e-552c33812565": {
+    "url": "db://assets/scripts/systems/inventory/index.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "f0706740-7a1d-487d-b58e-793bf18c8cd5": {
+    "url": "db://assets/scripts/systems/inventory/InventorySystem.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "2e19fc53-6b63-43a5-a4e8-26896b64edd3": {
+    "url": "db://assets/scripts/systems/match3/index.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "67ea2dd0-3b18-4aad-9ada-b3cb24fd2c00": {
+    "url": "db://assets/scripts/systems/match3/Match3Engine.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "2081be46-dac9-4c51-a50c-a3927b1b8423": {
+    "url": "db://assets/scripts/systems/order/index.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "e845251c-c63f-40d6-ac8b-8b2b6df03692": {
+    "url": "db://assets/scripts/systems/order/OrderManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "19dc35d3-1d9f-4251-8621-ef7273cbd0f5": {
+    "url": "db://assets/scripts/systems/save/index.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "bceae917-04eb-4c93-960d-2860456dfe6d": {
+    "url": "db://assets/scripts/systems/save/SaveManager.ts",
+    "value": {},
+    "versionCode": 1
+  },
+  "ef094bf6-cf6b-42b6-b625-914057c527cb": {
+    "url": "db://assets/prefabs/Cell.prefab",
+    "value": {
+      "depends": [
+        "00000000-0000-4000-8000-00000000002c",
+        "00000000-0000-4000-8000-00000000002d",
+        "00000000-0000-4000-8000-00000000002e",
+        "00000000-0000-4000-8000-00000000002f",
+        "00000000-0000-4000-8000-000000000030"
+      ],
+      "dependScripts": [
+        "f8eefc8e-b4c6-44f7-988d-3a69af895277"
+      ]
+    },
+    "versionCode": 2
+  },
+  "4a29fe02-2e41-4527-aae7-86e3ab8c709f": {
+    "url": "db://assets/scenes/MainScene.scene",
+    "value": {
+      "depends": [
+        "00000000-0000-4000-8000-000000000001",
+        "00000000-0000-4000-8000-000000000002",
+        "00000000-0000-4000-8000-000000000003",
+        "00000000-0000-4000-8000-000000000004",
+        "00000000-0000-4000-8000-000000000005",
+        "00000000-0000-4000-8000-000000000006",
+        "00000000-0000-4000-8000-000000000007",
+        "00000000-0000-4000-8000-000000000008",
+        "00000000-0000-4000-8000-000000000009",
+        "ef094bf6-cf6b-42b6-b625-914057c527cb",
+        "00000000-0000-4000-8000-00000000000a",
+        "00000000-0000-4000-8000-00000000000b",
+        "00000000-0000-4000-8000-00000000000c",
+        "00000000-0000-4000-8000-00000000000d",
+        "00000000-0000-4000-8000-00000000000e",
+        "00000000-0000-4000-8000-00000000000f",
+        "00000000-0000-4000-8000-000000000010",
+        "00000000-0000-4000-8000-000000000011",
+        "00000000-0000-4000-8000-000000000012",
+        "00000000-0000-4000-8000-000000000013",
+        "00000000-0000-4000-8000-000000000014",
+        "00000000-0000-4000-8000-000000000015",
+        "00000000-0000-4000-8000-000000000016",
+        "00000000-0000-4000-8000-000000000017",
+        "00000000-0000-4000-8000-000000000018",
+        "00000000-0000-4000-8000-000000000019",
+        "00000000-0000-4000-8000-00000000001a",
+        "00000000-0000-4000-8000-00000000001b",
+        "00000000-0000-4000-8000-00000000001c",
+        "00000000-0000-4000-8000-00000000001d",
+        "00000000-0000-4000-8000-00000000001e",
+        "00000000-0000-4000-8000-00000000001f",
+        "00000000-0000-4000-8000-000000000020",
+        "00000000-0000-4000-8000-000000000021",
+        "00000000-0000-4000-8000-000000000022",
+        "00000000-0000-4000-8000-000000000023",
+        "00000000-0000-4000-8000-000000000024",
+        "00000000-0000-4000-8000-000000000025",
+        "00000000-0000-4000-8000-000000000026",
+        "00000000-0000-4000-8000-000000000027",
+        "00000000-0000-4000-8000-000000000028",
+        "00000000-0000-4000-8000-000000000029",
+        "00000000-0000-4000-8000-00000000002a",
+        "00000000-0000-4000-8000-00000000002b",
+        "00000000-0000-4000-8000-000000000030"
+      ],
+      "dependScripts": [
+        "1b161f1e-0332-4881-8f11-260397d1225f",
+        "cd8f6da8-f431-415e-816e-63472530702e",
+        "d61a64ac-d832-4d53-a537-c5a85bcd82a1",
+        "b0c1d50f-c645-4b45-bdf4-0689110514fe"
+      ]
+    },
+    "versionCode": 2
+  },
+  "4a48e774-3bd8-42c3-91a1-a340df3392a5": {
+    "url": "db://assets/textures/button/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5c16e17b-0995-4ece-8e46-00b167eb1278": {
+    "url": "db://assets/scripts/ui/TASK_MATCH3.md",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "d3526fc2-781d-456e-8c62-c774eb1b906c": {
+    "url": "db://assets/scripts/ui/TASK_UI.md",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5a29f03b-66e3-4352-b942-3b71707a2be0": {
+    "url": "db://assets/textures/button_bg/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "4db4a7fc-23bc-46bc-a735-bfc87ea5a352": {
+    "url": "db://assets/textures/doll_base/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "37cd2464-ca70-45b9-839c-62bec6a7f3a0": {
+    "url": "db://assets/textures/iron/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "24a39260-e753-4d61-a8c9-ece19fbbcf0d": {
+    "url": "db://assets/textures/line/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "4a48e774-3bd8-42c3-91a1-a340df3392a5@6c48a": {
+    "url": "db://assets/textures/button/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "4a48e774-3bd8-42c3-91a1-a340df3392a5"
+      ]
+    },
+    "versionCode": 1
+  },
+  "170aa1dd-7e51-4cf3-a035-b1bffcb2e072": {
+    "url": "db://assets/textures/line_blue/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "37cd2464-ca70-45b9-839c-62bec6a7f3a0@6c48a": {
+    "url": "db://assets/textures/iron/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "37cd2464-ca70-45b9-839c-62bec6a7f3a0"
+      ]
+    },
+    "versionCode": 1
+  },
+  "4db4a7fc-23bc-46bc-a735-bfc87ea5a352@6c48a": {
+    "url": "db://assets/textures/doll_base/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "4db4a7fc-23bc-46bc-a735-bfc87ea5a352"
+      ]
+    },
+    "versionCode": 1
+  },
+  "c9c880f5-0c87-451c-bab0-925d01309caf": {
+    "url": "db://assets/textures/line_red/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "2c65aeb1-953f-471b-9f85-519e3ce9de63": {
+    "url": "db://assets/textures/line_yellow/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "5a29f03b-66e3-4352-b942-3b71707a2be0@6c48a": {
+    "url": "db://assets/textures/button_bg/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "5a29f03b-66e3-4352-b942-3b71707a2be0"
+      ]
+    },
+    "versionCode": 1
+  },
+  "73d8a89b-5ce9-4a29-8690-830a25952515": {
+    "url": "db://assets/textures/rainbow/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "24a39260-e753-4d61-a8c9-ece19fbbcf0d@6c48a": {
+    "url": "db://assets/textures/line/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "24a39260-e753-4d61-a8c9-ece19fbbcf0d"
+      ]
+    },
+    "versionCode": 1
+  },
+  "990180c8-a079-4352-b399-52ee360ea219": {
+    "url": "db://assets/textures/scissors/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "170aa1dd-7e51-4cf3-a035-b1bffcb2e072@6c48a": {
+    "url": "db://assets/textures/line_blue/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "170aa1dd-7e51-4cf3-a035-b1bffcb2e072"
+      ]
+    },
+    "versionCode": 1
+  },
+  "2fcb4ee1-48f3-4bde-a315-5fbd86981c8c": {
+    "url": "db://assets/textures/sewing/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "c9c880f5-0c87-451c-bab0-925d01309caf@6c48a": {
+    "url": "db://assets/textures/line_red/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "c9c880f5-0c87-451c-bab0-925d01309caf"
+      ]
+    },
+    "versionCode": 1
+  },
+  "dceaf9a7-586c-4c29-bc3a-22af184f86ce": {
+    "url": "db://assets/textures/shuttle/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "73d8a89b-5ce9-4a29-8690-830a25952515@6c48a": {
+    "url": "db://assets/textures/rainbow/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "73d8a89b-5ce9-4a29-8690-830a25952515"
+      ]
+    },
+    "versionCode": 1
+  },
+  "da4eca74-673a-4076-bf53-f14750130472": {
+    "url": "db://assets/textures/tape/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "2c65aeb1-953f-471b-9f85-519e3ce9de63@6c48a": {
+    "url": "db://assets/textures/line_yellow/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "2c65aeb1-953f-471b-9f85-519e3ce9de63"
+      ]
+    },
+    "versionCode": 1
+  },
+  "44f5783a-53df-46f0-9053-5ec521264a2c": {
+    "url": "db://assets/textures/ui_bg/spriteFrame.png",
+    "value": {
+      "depends": []
+    },
+    "versionCode": 1
+  },
+  "990180c8-a079-4352-b399-52ee360ea219@6c48a": {
+    "url": "db://assets/textures/scissors/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "990180c8-a079-4352-b399-52ee360ea219"
+      ]
+    },
+    "versionCode": 1
+  },
+  "2fcb4ee1-48f3-4bde-a315-5fbd86981c8c@6c48a": {
+    "url": "db://assets/textures/sewing/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "2fcb4ee1-48f3-4bde-a315-5fbd86981c8c"
+      ]
+    },
+    "versionCode": 1
+  },
+  "da4eca74-673a-4076-bf53-f14750130472@6c48a": {
+    "url": "db://assets/textures/tape/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "da4eca74-673a-4076-bf53-f14750130472"
+      ]
+    },
+    "versionCode": 1
+  },
+  "dceaf9a7-586c-4c29-bc3a-22af184f86ce@6c48a": {
+    "url": "db://assets/textures/shuttle/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "dceaf9a7-586c-4c29-bc3a-22af184f86ce"
+      ]
+    },
+    "versionCode": 1
+  },
+  "44f5783a-53df-46f0-9053-5ec521264a2c@6c48a": {
+    "url": "db://assets/textures/ui_bg/spriteFrame.png@6c48a",
+    "value": {
+      "depends": [
+        "44f5783a-53df-46f0-9053-5ec521264a2c"
+      ]
+    },
+    "versionCode": 1
+  }
+}

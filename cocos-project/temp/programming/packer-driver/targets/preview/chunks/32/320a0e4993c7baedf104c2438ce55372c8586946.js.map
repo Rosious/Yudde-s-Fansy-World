@@ -1,0 +1,1 @@
+{"version":3,"sources":["file:///D:/Yudde-Demo/cocos-project/assets/scripts/systems/order/index.ts"],"names":["OrderManager"],"mappings":";;;;;;;;;2CAASA,Y","sourcesContent":["export { OrderManager } from './OrderManager';\n"]}

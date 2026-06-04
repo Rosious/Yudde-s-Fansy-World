@@ -1,0 +1,1 @@
+{"version":3,"sources":["file:///D:/Yudde-Demo/cocos-project/assets/scripts/systems/dressup/index.ts"],"names":["DressUpManager"],"mappings":";;;;;;;;;6CAASA,c","sourcesContent":["export { DressUpManager } from './DressUpManager';\n"]}

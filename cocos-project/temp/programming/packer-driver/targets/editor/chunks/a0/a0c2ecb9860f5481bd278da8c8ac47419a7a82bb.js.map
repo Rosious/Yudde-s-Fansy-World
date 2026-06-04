@@ -1,0 +1,1 @@
+{"version":3,"sources":["file:///D:/Yudde-Demo/cocos-project/assets/scripts/systems/save/index.ts"],"names":["SaveManager"],"mappings":";;;;;;;;;0CAASA,W","sourcesContent":["export { SaveManager } from './SaveManager';\n"]}
