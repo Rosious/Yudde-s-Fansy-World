@@ -31,6 +31,7 @@ import { ElementType, SpecialType, GameEvent } from '../core/types';
 import type { Cell, GridConfig } from '../core/types';
 import { eventBus } from '../core/EventBus';
 import { CellComponent } from './CellComponent';
+import { MainGameFlow } from './MainGameFlow';
 
 const { ccclass, property } = _decorator;
 
@@ -515,6 +516,7 @@ export class Match3GridComponent extends Component {
         this.isProcessing = true;
         let currentGrid = grid;
         let cascades = 0;
+        let clearedAnyMatch = false;
         const MAX_CASCADES = 100; // 安全上限
 
         while (cascades < MAX_CASCADES) {
@@ -526,6 +528,7 @@ export class Match3GridComponent extends Component {
             }
 
             cascades++;
+            clearedAnyMatch = true;
 
             // 发射 MATCH_FOUND 事件
             eventBus.emit(GameEvent.MATCH_FOUND, matches);
@@ -547,6 +550,10 @@ export class Match3GridComponent extends Component {
 
         // 发射棋盘稳定事件
         eventBus.emit(GameEvent.GRID_STABLE, currentGrid);
+
+        if (clearedAnyMatch) {
+            MainGameFlow.getInstance().registerMatchLevelClear();
+        }
 
         this.isProcessing = false;
     }

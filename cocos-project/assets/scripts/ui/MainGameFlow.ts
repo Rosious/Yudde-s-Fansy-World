@@ -10,8 +10,20 @@ import { _decorator, Button, Canvas, Camera, Component, Node, Vec3, director } f
 import { InventorySystem } from '../systems/inventory/InventorySystem';
 import { OrderManager } from '../systems/order/OrderManager';
 import { DressUpManager } from '../systems/dressup/DressUpManager';
+import { eventBus } from '../core/EventBus';
+import { GameEvent } from '../core/types';
+import type { ElementType } from '../core/types';
 
 const { ccclass, property } = _decorator;
+
+type SceneKey = 'match' | 'shop' | 'dress';
+type SceneName = 'MatchScene' | 'ShopScene' | 'DressScene';
+
+const SCENE_BY_KEY: Record<SceneKey, SceneName> = {
+    match: 'MatchScene',
+    shop: 'ShopScene',
+    dress: 'DressScene',
+};
 
 /**
  * 游戏全局主流程协调器。
@@ -55,6 +67,8 @@ export class MainGameFlow extends Component {
     /** 全局换装管理器 */
     public dressUpManager!: DressUpManager;
 
+    private unlockedOutfitLevel: number = 1;
+
     // ==========================================================
     // 生命周期
     // ==========================================================
@@ -82,8 +96,35 @@ export class MainGameFlow extends Component {
 
         console.log('[MainGameFlow] 初始化完成，三大系统已就绪。');
 
+        eventBus.on(GameEvent.MATCH_CLEARED, this.onMatchCleared);
+        this.prepareCurrentScene();
+    }
+
+    public getUnlockedOutfitLevel(): number {
+        return this.unlockedOutfitLevel;
+    }
+
+    public registerMatchLevelClear(): number {
+        if (this.unlockedOutfitLevel < 5) {
+            this.unlockedOutfitLevel += 1;
+            console.log(`[MainGameFlow] Outfit level unlocked: ${this.unlockedOutfitLevel}`);
+        }
+
+        return this.unlockedOutfitLevel;
+    }
+
+    private onMatchCleared = (payload: { clearedItems?: Array<{ type: ElementType; count: number }> }): void => {
+        for (const item of payload.clearedItems ?? []) {
+            if (item.count > 0) {
+                this.inventorySystem.addItem(item.type, item.count);
+            }
+        }
+    };
+
+    private prepareCurrentScene(): void {
+        this.configureSceneCamera();
         this.bindBottomButtons();
-        this.showPanel('match');
+        this.updateBottomButtonState();
     }
 
     private configureSceneCamera(): void {
@@ -134,35 +175,55 @@ export class MainGameFlow extends Component {
     }
 
     private onMatchClicked(): void {
-        this.showPanel('match');
+        this.loadGameScene('match');
     }
 
     private onShopClicked(): void {
-        this.showPanel('shop');
+        this.loadGameScene('shop');
     }
 
     private onDressClicked(): void {
-        this.showPanel('dress');
+        this.loadGameScene('dress');
     }
 
-    private showPanel(activePanel: 'match' | 'shop' | 'dress'): void {
-        const canvas = this.findCanvasNode();
-        if (!canvas) {
-            console.warn('[MainGameFlow] Canvas not found; cannot switch panels.');
+    private loadGameScene(key: SceneKey): void {
+        const sceneName = SCENE_BY_KEY[key];
+        const currentScene = director.getScene();
+        const currentSceneName = currentScene?.name ?? (currentScene as any)?._name;
+
+        if (currentSceneName === sceneName) {
+            this.prepareCurrentScene();
             return;
         }
 
-        const matchGrid = canvas.getChildByName('MatchGrid');
-        const shopPanel = canvas.getChildByName('ShopPanel');
-        const dressRoomPanel = canvas.getChildByName('DressRoomPanel');
+        const loadScene = (director as any).loadScene as (name: string, onLaunched?: () => void) => void;
+        loadScene.call(director, sceneName, () => this.prepareCurrentScene());
+        setTimeout(() => this.prepareCurrentScene(), 0);
+        setTimeout(() => this.prepareCurrentScene(), 100);
+    }
 
-        if (!matchGrid || !shopPanel || !dressRoomPanel) {
-            console.warn('[MainGameFlow] One or more main panels are missing.');
+    private updateBottomButtonState(): void {
+        const canvas = this.findCanvasNode();
+        const bottomBar = canvas?.getChildByName('BottomBar');
+        if (!bottomBar) {
+            return;
         }
 
-        if (matchGrid) matchGrid.active = activePanel === 'match';
-        if (shopPanel) shopPanel.active = activePanel === 'shop';
-        if (dressRoomPanel) dressRoomPanel.active = activePanel === 'dress';
+        const currentScene = director.getScene();
+        const currentSceneName = currentScene?.name ?? (currentScene as any)?._name;
+        const activeKey = (Object.keys(SCENE_BY_KEY) as SceneKey[])
+            .find((key) => SCENE_BY_KEY[key] === currentSceneName);
+
+        const buttonMap: Record<SceneKey, string> = {
+            match: 'BtnMatch',
+            shop: 'BtnShop',
+            dress: 'BtnDress',
+        };
+
+        for (const key of Object.keys(buttonMap) as SceneKey[]) {
+            const buttonNode = bottomBar.getChildByName(buttonMap[key]);
+            buttonNode?.setScale(key === activeKey ? new Vec3(1.08, 1.08, 1) : new Vec3(1, 1, 1));
+        }
     }
 
     private findCanvasNode(): Node | null {
@@ -171,6 +232,8 @@ export class MainGameFlow extends Component {
     }
 
     onDestroy(): void {
+        eventBus.off(GameEvent.MATCH_CLEARED, this.onMatchCleared);
+
         // 清理单例引用，避免野指针
         if (MainGameFlow._instance === this) {
             MainGameFlow._instance = null;

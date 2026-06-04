@@ -67,7 +67,10 @@
             "textures\\sewing\\spriteFrame.png",
             "textures\\shuttle\\spriteFrame.png",
             "textures\\tape\\spriteFrame.png",
-            "textures\\ui_bg\\spriteFrame.png"
+            "textures\\ui_bg\\spriteFrame.png",
+            "scenes\\DressScene.scene",
+            "scenes\\MatchScene.scene",
+            "scenes\\ShopScene.scene"
         ]
     }
 }

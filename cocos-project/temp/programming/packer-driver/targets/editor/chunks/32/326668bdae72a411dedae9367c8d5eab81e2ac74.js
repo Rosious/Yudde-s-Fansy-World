@@ -1,7 +1,7 @@
-System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__unresolved_3"], function (_export, _context) {
+System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__unresolved_3", "__unresolved_4", "__unresolved_5"], function (_export, _context) {
   "use strict";
 
-  var _reporterNs, _cclegacy, __checkObsolete__, __checkObsoleteInNamespace__, _decorator, Button, Canvas, Camera, Component, Vec3, director, InventorySystem, OrderManager, DressUpManager, _dec, _class, _class2, _crd, ccclass, property, MainGameFlow;
+  var _reporterNs, _cclegacy, __checkObsolete__, __checkObsoleteInNamespace__, _decorator, Button, Canvas, Camera, Component, Vec3, director, InventorySystem, OrderManager, DressUpManager, eventBus, GameEvent, _dec, _class, _class2, _crd, ccclass, property, SCENE_BY_KEY, MainGameFlow;
 
   function _reportPossibleCrUseOfInventorySystem(extras) {
     _reporterNs.report("InventorySystem", "../systems/inventory/InventorySystem", _context.meta, extras);
@@ -13,6 +13,18 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
 
   function _reportPossibleCrUseOfDressUpManager(extras) {
     _reporterNs.report("DressUpManager", "../systems/dressup/DressUpManager", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfeventBus(extras) {
+    _reporterNs.report("eventBus", "../core/EventBus", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfGameEvent(extras) {
+    _reporterNs.report("GameEvent", "../core/types", _context.meta, extras);
+  }
+
+  function _reportPossibleCrUseOfElementType(extras) {
+    _reporterNs.report("ElementType", "../core/types", _context.meta, extras);
   }
 
   return {
@@ -35,6 +47,10 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
       OrderManager = _unresolved_3.OrderManager;
     }, function (_unresolved_4) {
       DressUpManager = _unresolved_4.DressUpManager;
+    }, function (_unresolved_5) {
+      eventBus = _unresolved_5.eventBus;
+    }, function (_unresolved_6) {
+      GameEvent = _unresolved_6.GameEvent;
     }],
     execute: function () {
       _crd = true;
@@ -54,6 +70,11 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         ccclass,
         property
       } = _decorator);
+      SCENE_BY_KEY = {
+        match: 'MatchScene',
+        shop: 'ShopScene',
+        dress: 'DressScene'
+      };
       /**
        * 游戏全局主流程协调器。
        *
@@ -78,6 +99,17 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
 
           /** 全局换装管理器 */
           this.dressUpManager = void 0;
+          this.unlockedOutfitLevel = 1;
+
+          this.onMatchCleared = payload => {
+            for (const item of (_payload$clearedItems = payload.clearedItems) != null ? _payload$clearedItems : []) {
+              var _payload$clearedItems;
+
+              if (item.count > 0) {
+                this.inventorySystem.addItem(item.type, item.count);
+              }
+            }
+          };
         }
 
         /**
@@ -122,8 +154,31 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             error: Error()
           }), DressUpManager) : DressUpManager)();
           console.log('[MainGameFlow] 初始化完成，三大系统已就绪。');
+          (_crd && eventBus === void 0 ? (_reportPossibleCrUseOfeventBus({
+            error: Error()
+          }), eventBus) : eventBus).on((_crd && GameEvent === void 0 ? (_reportPossibleCrUseOfGameEvent({
+            error: Error()
+          }), GameEvent) : GameEvent).MATCH_CLEARED, this.onMatchCleared);
+          this.prepareCurrentScene();
+        }
+
+        getUnlockedOutfitLevel() {
+          return this.unlockedOutfitLevel;
+        }
+
+        registerMatchLevelClear() {
+          if (this.unlockedOutfitLevel < 5) {
+            this.unlockedOutfitLevel += 1;
+            console.log(`[MainGameFlow] Outfit level unlocked: ${this.unlockedOutfitLevel}`);
+          }
+
+          return this.unlockedOutfitLevel;
+        }
+
+        prepareCurrentScene() {
+          this.configureSceneCamera();
           this.bindBottomButtons();
-          this.showPanel('match');
+          this.updateBottomButtonState();
         }
 
         configureSceneCamera() {
@@ -178,36 +233,58 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         }
 
         onMatchClicked() {
-          this.showPanel('match');
+          this.loadGameScene('match');
         }
 
         onShopClicked() {
-          this.showPanel('shop');
+          this.loadGameScene('shop');
         }
 
         onDressClicked() {
-          this.showPanel('dress');
+          this.loadGameScene('dress');
         }
 
-        showPanel(activePanel) {
-          const canvas = this.findCanvasNode();
+        loadGameScene(key) {
+          var _currentScene$name;
 
-          if (!canvas) {
-            console.warn('[MainGameFlow] Canvas not found; cannot switch panels.');
+          const sceneName = SCENE_BY_KEY[key];
+          const currentScene = director.getScene();
+          const currentSceneName = (_currentScene$name = currentScene == null ? void 0 : currentScene.name) != null ? _currentScene$name : currentScene == null ? void 0 : currentScene._name;
+
+          if (currentSceneName === sceneName) {
+            this.prepareCurrentScene();
             return;
           }
 
-          const matchGrid = canvas.getChildByName('MatchGrid');
-          const shopPanel = canvas.getChildByName('ShopPanel');
-          const dressRoomPanel = canvas.getChildByName('DressRoomPanel');
+          const loadScene = director.loadScene;
+          loadScene.call(director, sceneName, () => this.prepareCurrentScene());
+          setTimeout(() => this.prepareCurrentScene(), 0);
+          setTimeout(() => this.prepareCurrentScene(), 100);
+        }
 
-          if (!matchGrid || !shopPanel || !dressRoomPanel) {
-            console.warn('[MainGameFlow] One or more main panels are missing.');
+        updateBottomButtonState() {
+          var _currentScene$name2;
+
+          const canvas = this.findCanvasNode();
+          const bottomBar = canvas == null ? void 0 : canvas.getChildByName('BottomBar');
+
+          if (!bottomBar) {
+            return;
           }
 
-          if (matchGrid) matchGrid.active = activePanel === 'match';
-          if (shopPanel) shopPanel.active = activePanel === 'shop';
-          if (dressRoomPanel) dressRoomPanel.active = activePanel === 'dress';
+          const currentScene = director.getScene();
+          const currentSceneName = (_currentScene$name2 = currentScene == null ? void 0 : currentScene.name) != null ? _currentScene$name2 : currentScene == null ? void 0 : currentScene._name;
+          const activeKey = Object.keys(SCENE_BY_KEY).find(key => SCENE_BY_KEY[key] === currentSceneName);
+          const buttonMap = {
+            match: 'BtnMatch',
+            shop: 'BtnShop',
+            dress: 'BtnDress'
+          };
+
+          for (const key of Object.keys(buttonMap)) {
+            const buttonNode = bottomBar.getChildByName(buttonMap[key]);
+            buttonNode == null || buttonNode.setScale(key === activeKey ? new Vec3(1.08, 1.08, 1) : new Vec3(1, 1, 1));
+          }
         }
 
         findCanvasNode() {
@@ -218,7 +295,12 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         }
 
         onDestroy() {
-          // 清理单例引用，避免野指针
+          (_crd && eventBus === void 0 ? (_reportPossibleCrUseOfeventBus({
+            error: Error()
+          }), eventBus) : eventBus).off((_crd && GameEvent === void 0 ? (_reportPossibleCrUseOfGameEvent({
+            error: Error()
+          }), GameEvent) : GameEvent).MATCH_CLEARED, this.onMatchCleared); // 清理单例引用，避免野指针
+
           if (MainGameFlow._instance === this) {
             MainGameFlow._instance = null;
           }

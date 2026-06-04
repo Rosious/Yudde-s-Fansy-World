@@ -1,7 +1,7 @@
 System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__unresolved_3"], function (_export, _context) {
   "use strict";
 
-  var _reporterNs, _cclegacy, __checkObsolete__, __checkObsoleteInNamespace__, _decorator, Component, Node, Label, Button, Sprite, Prefab, instantiate, resources, SpriteFrame, Color, UITransform, MainGameFlow, eventBus, DressPart, StyleTag, GameEvent, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _crd, ccclass, property, DressRoomPanel;
+  var _reporterNs, _cclegacy, __checkObsolete__, __checkObsoleteInNamespace__, _decorator, Component, Node, Label, Button, Sprite, Prefab, instantiate, resources, SpriteFrame, Color, UITransform, Graphics, MainGameFlow, eventBus, DressPart, StyleTag, GameEvent, _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _crd, ccclass, property, DressRoomPanel;
 
   function _initializerDefineProperty(target, property, descriptor, context) { if (!descriptor) return; Object.defineProperty(target, property, { enumerable: descriptor.enumerable, configurable: descriptor.configurable, writable: descriptor.writable, value: descriptor.initializer ? descriptor.initializer.call(context) : void 0 }); }
 
@@ -56,6 +56,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
       SpriteFrame = _cc.SpriteFrame;
       Color = _cc.Color;
       UITransform = _cc.UITransform;
+      Graphics = _cc.Graphics;
     }, function (_unresolved_2) {
       MainGameFlow = _unresolved_2.MainGameFlow;
     }, function (_unresolved_3) {
@@ -79,7 +80,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
       // ============================================================
 
 
-      __checkObsolete__(['_decorator', 'Component', 'Node', 'Label', 'Button', 'Sprite', 'Prefab', 'instantiate', 'resources', 'SpriteFrame', 'Color', 'UITransform']);
+      __checkObsolete__(['_decorator', 'Component', 'Node', 'Label', 'Button', 'Sprite', 'Prefab', 'instantiate', 'resources', 'SpriteFrame', 'Color', 'UITransform', 'Graphics']);
 
       ({
         ccclass,
@@ -149,6 +150,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
 
           /** 服装目录（所有可用服装数据） */
           this.catalog = [];
+          this.levelOutfitContainer = null;
+          this.previewGraphic = null;
 
           // ==========================================================
           // 事件回调
@@ -159,6 +162,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
            * 自动刷新娃预览和 Buff/计分显示。
            */
           this.onDressChanged = () => {
+            this.refreshLevelOutfits();
             this.refreshDollPreview();
             this.refreshBuffDisplay();
           };
@@ -172,15 +176,12 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
           var mgf = (_crd && MainGameFlow === void 0 ? (_reportPossibleCrUseOfMainGameFlow({
             error: Error()
           }), MainGameFlow) : MainGameFlow).getInstance();
-          this.dressUpManager = mgf.dressUpManager; // 初始化服装目录（每个部位至少 2 件）
+          this.dressUpManager = mgf.dressUpManager;
+          this.ensureFallbackUi(); // 初始化 5 个关卡解锁套装
 
-          this.initCatalog(); // 绑定 Tab 按钮事件
-
-          this.initTabs(); // 默认显示 HAIR 部位
-
-          this.switchTab((_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-            error: Error()
-          }), DressPart) : DressPart).HAIR); // 监听换装事件 → 自动刷新预览和 Buff 显示
+          this.initCatalog();
+          this.ensureDefaultOutfit();
+          this.refreshLevelOutfits(); // 监听换装事件 → 自动刷新预览和 Buff 显示
 
           (_crd && eventBus === void 0 ? (_reportPossibleCrUseOfeventBus({
             error: Error()
@@ -204,195 +205,183 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         // ==========================================================
 
         /**
-         * 初始化内置服装目录。
+         * 初始化 5 个关卡套装。
          *
-         * 每个部位至少 2 件衣服，覆盖 4 种风格。
-         * 部分衣服带有三消 Buff（COIN_BONUS / START_BOMB / EXTRA_MOVE）。
+         * Level 1 默认解锁白色套装；Level 2-5 随三消通关逐级解锁。
          */
 
 
         initCatalog() {
-          this.catalog = [// ---- 头发 ----
-          {
-            id: 'hair_01',
+          this.catalog = [{
+            id: 'outfit_level_1_white',
             part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
               error: Error()
-            }), DressPart) : DressPart).HAIR,
-            slotName: 'hair',
-            attachmentName: 'hair_sweet_pink',
+            }), DressPart) : DressPart).TOP,
+            slotName: 'dress',
+            attachmentName: 'dress_white',
             style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
               error: Error()
             }), StyleTag) : StyleTag).SWEET,
+            isFullDress: true,
+            level: 1,
+            displayName: 'White Outfit',
+            colorName: 'White',
+            outfitColor: new Color(245, 245, 238, 255)
+          }, {
+            id: 'outfit_level_2_red',
+            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
+              error: Error()
+            }), DressPart) : DressPart).TOP,
+            slotName: 'dress',
+            attachmentName: 'dress_red',
+            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
+              error: Error()
+            }), StyleTag) : StyleTag).SWEET,
+            isFullDress: true,
+            level: 2,
+            displayName: 'Red Outfit',
+            colorName: 'Red',
+            outfitColor: new Color(218, 66, 72, 255)
+          }, {
+            id: 'outfit_level_3_blue',
+            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
+              error: Error()
+            }), DressPart) : DressPart).TOP,
+            slotName: 'dress',
+            attachmentName: 'dress_blue',
+            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
+              error: Error()
+            }), StyleTag) : StyleTag).CYBER,
+            isFullDress: true,
+            level: 3,
+            displayName: 'Blue Outfit',
+            colorName: 'Blue',
+            outfitColor: new Color(61, 128, 218, 255),
+            matchBuff: {
+              type: 'EXTRA_MOVE',
+              value: 1
+            }
+          }, {
+            id: 'outfit_level_4_green',
+            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
+              error: Error()
+            }), DressPart) : DressPart).TOP,
+            slotName: 'dress',
+            attachmentName: 'dress_green',
+            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
+              error: Error()
+            }), StyleTag) : StyleTag).CUTE,
+            isFullDress: true,
+            level: 4,
+            displayName: 'Green Outfit',
+            colorName: 'Green',
+            outfitColor: new Color(72, 166, 106, 255),
             matchBuff: {
               type: 'COIN_BONUS',
               value: 10
             }
           }, {
-            id: 'hair_02',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).HAIR,
-            slotName: 'hair',
-            attachmentName: 'hair_cyber_neon',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CYBER
-          }, {
-            id: 'hair_03',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).HAIR,
-            slotName: 'hair',
-            attachmentName: 'hair_retro_curl',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).RETRO
-          }, // ---- 上衣 ----
-          {
-            id: 'top_01',
+            id: 'outfit_level_5_purple',
             part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
               error: Error()
             }), DressPart) : DressPart).TOP,
-            slotName: 'top',
-            attachmentName: 'top_sweet_lace',
+            slotName: 'dress',
+            attachmentName: 'dress_purple',
             style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
               error: Error()
-            }), StyleTag) : StyleTag).SWEET,
+            }), StyleTag) : StyleTag).RETRO,
+            isFullDress: true,
+            level: 5,
+            displayName: 'Purple Outfit',
+            colorName: 'Purple',
+            outfitColor: new Color(142, 92, 184, 255),
             matchBuff: {
               type: 'START_BOMB',
               value: 1
             }
-          }, {
-            id: 'top_02',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).TOP,
-            slotName: 'top',
-            attachmentName: 'top_cute_hoodie',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CUTE,
-            matchBuff: {
-              type: 'COIN_BONUS',
-              value: 15
-            }
-          }, {
-            id: 'top_03',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).TOP,
-            slotName: 'top',
-            attachmentName: 'top_cyber_jacket',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CYBER,
-            isFullDress: false
-          }, // ---- 下装 ----
-          {
-            id: 'bottom_01',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).BOTTOM,
-            slotName: 'bottom',
-            attachmentName: 'bottom_sweet_skirt',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).SWEET
-          }, {
-            id: 'bottom_02',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).BOTTOM,
-            slotName: 'bottom',
-            attachmentName: 'bottom_retro_pants',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).RETRO,
-            matchBuff: {
-              type: 'EXTRA_MOVE',
-              value: 3
-            }
-          }, {
-            id: 'bottom_03',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).BOTTOM,
-            slotName: 'bottom',
-            attachmentName: 'bottom_cute_shorts',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CUTE
-          }, // ---- 鞋子 ----
-          {
-            id: 'shoes_01',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).SHOES,
-            slotName: 'shoes',
-            attachmentName: 'shoes_sweet_maryjane',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).SWEET
-          }, {
-            id: 'shoes_02',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).SHOES,
-            slotName: 'shoes',
-            attachmentName: 'shoes_cyber_boots',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CYBER,
-            matchBuff: {
-              type: 'COIN_BONUS',
-              value: 5
-            }
-          }, {
-            id: 'shoes_03',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).SHOES,
-            slotName: 'shoes',
-            attachmentName: 'shoes_retro_heels',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).RETRO
-          }, // ---- 配饰 ----
-          {
-            id: 'acc_01',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).ACCESSORY,
-            slotName: 'accessory',
-            attachmentName: 'acc_sweet_bow',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).SWEET
-          }, {
-            id: 'acc_02',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).ACCESSORY,
-            slotName: 'accessory',
-            attachmentName: 'acc_cute_cat_ears',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CUTE,
-            matchBuff: {
-              type: 'EXTRA_MOVE',
-              value: 2
-            }
-          }, {
-            id: 'acc_03',
-            part: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
-              error: Error()
-            }), DressPart) : DressPart).ACCESSORY,
-            slotName: 'accessory',
-            attachmentName: 'acc_cyber_goggles',
-            style: (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CYBER
           }];
+        }
+
+        ensureDefaultOutfit() {
+          var currentDress = this.dressUpManager.getCurrentDress();
+
+          if (currentDress[(_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
+            error: Error()
+          }), DressPart) : DressPart).TOP]) {
+            return;
+          }
+
+          var defaultOutfit = this.getLevelOutfits()[0];
+
+          if (defaultOutfit) {
+            this.dressUpManager.changeEquipment(defaultOutfit.part, defaultOutfit);
+          }
+        }
+
+        getLevelOutfits() {
+          return this.catalog.filter(attachment => typeof attachment.level === 'number').sort((a, b) => {
+            var _a$level, _b$level;
+
+            return ((_a$level = a.level) != null ? _a$level : 0) - ((_b$level = b.level) != null ? _b$level : 0);
+          });
+        }
+
+        refreshLevelOutfits() {
+          var container = this.ensureLevelOutfitContainer();
+          container.removeAllChildren();
+          var unlockedLevel = (_crd && MainGameFlow === void 0 ? (_reportPossibleCrUseOfMainGameFlow({
+            error: Error()
+          }), MainGameFlow) : MainGameFlow).getInstance().getUnlockedOutfitLevel();
+          var outfits = this.getLevelOutfits();
+
+          for (var i = 0; i < outfits.length; i++) {
+            this.createLevelOutfitCard(outfits[i], i, unlockedLevel);
+          }
+        }
+
+        createLevelOutfitCard(outfit, index, unlockedLevel) {
+          var _outfit$level, _outfit$outfitColor, _ref, _outfit$colorName;
+
+          var container = this.ensureLevelOutfitContainer();
+          var level = (_outfit$level = outfit.level) != null ? _outfit$level : 1;
+          var isUnlocked = level <= unlockedLevel;
+          var currentTop = this.dressUpManager.getCurrentDress()[(_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
+            error: Error()
+          }), DressPart) : DressPart).TOP];
+          var isSelected = (currentTop == null ? void 0 : currentTop.id) === outfit.id;
+          var cardNode = new Node("OutfitLevel" + level);
+          cardNode.parent = container;
+          cardNode.setPosition(-292 + index * 146, 24, 0);
+          var width = 124;
+          var height = 190;
+          var transform = cardNode.addComponent(UITransform);
+          transform.setContentSize(width, height);
+          var graphics = cardNode.addComponent(Graphics);
+          graphics.fillColor = isUnlocked ? (_outfit$outfitColor = outfit.outfitColor) != null ? _outfit$outfitColor : new Color(245, 245, 245, 255) : new Color(54, 57, 66, 255);
+          graphics.rect(-width / 2, -height / 2, width, height);
+          graphics.fill();
+          graphics.lineWidth = isSelected ? 5 : 2;
+          graphics.strokeColor = isSelected ? new Color(255, 230, 120, 255) : new Color(235, 239, 245, isUnlocked ? 210 : 90);
+          graphics.rect(-width / 2, -height / 2, width, height);
+          graphics.stroke();
+          var labelNode = new Node('OutfitLabel');
+          labelNode.parent = cardNode;
+          labelNode.setPosition(0, -8, 0);
+          var labelTransform = labelNode.addComponent(UITransform);
+          labelTransform.setContentSize(width - 14, height - 18);
+          var label = labelNode.addComponent(Label);
+          label.string = ["Lv." + level, (_ref = (_outfit$colorName = outfit.colorName) != null ? _outfit$colorName : outfit.displayName) != null ? _ref : outfit.id, isUnlocked ? isSelected ? 'Wearing' : 'Unlocked' : 'Locked'].join('\n');
+          label.fontSize = 18;
+          label.lineHeight = 24;
+          label.color = isUnlocked ? new Color(255, 255, 255, 255) : new Color(155, 160, 170, 255);
+          var button = this.ensureButton(cardNode, width, height);
+          button.interactable = isUnlocked;
+
+          if (isUnlocked) {
+            button.node.on(Button.EventType.CLICK, () => {
+              this.onItemClick(outfit);
+            }, this);
+          }
         } // ==========================================================
         // Tab 初始化
         // ==========================================================
@@ -408,7 +397,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         initTabs() {
           var _this = this;
 
-          if (!this.tabContainer) return;
+          var tabContainer = this.ensureTabContainer();
           var partMap = {
             HAIR: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
               error: Error()
@@ -438,7 +427,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             }, _this);
           };
 
-          for (var child of this.tabContainer.children) {
+          for (var child of tabContainer.children) {
             if (_loop()) continue;
           }
         } // ==========================================================
@@ -457,12 +446,10 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         switchTab(part) {
           this.currentPart = part; // 更新 Tab 高亮状态
 
-          this.updateTabHighlight(part); // 清空当前列表
+          this.updateTabHighlight(part);
+          var itemListContainer = this.ensureItemListContainer(); // 清空当前列表
 
-          if (this.itemListContainer) {
-            this.itemListContainer.removeAllChildren();
-          } // 筛选该部位的服装并创建列表项
-
+          itemListContainer.removeAllChildren(); // 筛选该部位的服装并创建列表项
 
           var items = this.catalog.filter(att => att.part === part);
 
@@ -480,7 +467,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
 
 
         updateTabHighlight(activePart) {
-          if (!this.tabContainer) return;
+          var tabContainer = this.ensureTabContainer();
           var partMap = {
             HAIR: (_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
               error: Error()
@@ -499,10 +486,12 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             }), DressPart) : DressPart).ACCESSORY
           };
 
-          for (var child of this.tabContainer.children) {
+          for (var child of tabContainer.children) {
+            var _child$getComponent;
+
             var part = partMap[child.name];
             if (!part) continue;
-            var label = child.getComponentInChildren(Label);
+            var label = (_child$getComponent = child.getComponent(Label)) != null ? _child$getComponent : child.getComponentInChildren(Label);
 
             if (label) {
               label.color = part === activePart ? new Color(255, 255, 255) // 选中：白色
@@ -526,8 +515,9 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
 
 
         createItemButton(attachment) {
-          if (!this.itemListContainer) return;
+          var itemListContainer = this.ensureItemListContainer();
           var itemNode;
+          var index = itemListContainer.children.length;
 
           if (this.itemPrefab) {
             // 使用预制体
@@ -543,7 +533,12 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             labelComp.color = new Color(255, 255, 255);
           }
 
-          itemNode.parent = this.itemListContainer; // 设置显示文本
+          itemNode.parent = itemListContainer;
+
+          if (!this.itemPrefab) {
+            itemNode.setPosition(-135 + index % 2 * 270, 110 - Math.floor(index / 2) * 64, 0);
+          } // 设置显示文本
+
 
           var label = itemNode.getComponentInChildren(Label);
 
@@ -569,6 +564,155 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
           btn.node.on(Button.EventType.CLICK, () => {
             this.onItemClick(attachment);
           }, this);
+        }
+
+        ensureFallbackUi() {
+          this.ensureDollPreview();
+          this.ensureLevelOutfitContainer();
+
+          if (!this.styleScoreLabel || !this.styleScoreLabel.isValid) {
+            this.styleScoreLabel = this.createFallbackLabel('FallbackStyleScoreLabel', '', 0, -190, 620, 30, 16);
+          }
+
+          if (!this.buffLabel || !this.buffLabel.isValid) {
+            this.buffLabel = this.createFallbackLabel('FallbackBuffLabel', '', 0, -225, 620, 30, 16);
+          }
+        }
+
+        ensureDollPreview() {
+          var _previewNode$getCompo, _previewNode$getCompo2;
+
+          if (this.dollPreview && this.dollPreview.isValid) {
+            return this.dollPreview;
+          }
+
+          var previewNode = this.node.getChildByName('FallbackDollPreview');
+
+          if (!previewNode) {
+            previewNode = new Node('FallbackDollPreview');
+            previewNode.parent = this.node;
+            previewNode.setPosition(-430, 35, 0);
+          }
+
+          var transform = previewNode.getComponent(UITransform);
+
+          if (!transform) {
+            transform = previewNode.addComponent(UITransform);
+          }
+
+          transform.setContentSize(210, 300);
+          this.previewGraphic = (_previewNode$getCompo = previewNode.getComponent(Graphics)) != null ? _previewNode$getCompo : previewNode.addComponent(Graphics);
+          this.dollPreview = (_previewNode$getCompo2 = previewNode.getComponent(Sprite)) != null ? _previewNode$getCompo2 : previewNode.addComponent(Sprite);
+          return this.dollPreview;
+        }
+
+        ensureLevelOutfitContainer() {
+          if (this.levelOutfitContainer && this.levelOutfitContainer.isValid) {
+            return this.levelOutfitContainer;
+          }
+
+          if (this.itemListContainer && this.itemListContainer.isValid) {
+            this.levelOutfitContainer = this.itemListContainer;
+            return this.levelOutfitContainer;
+          }
+
+          var container = this.node.getChildByName('FallbackLevelOutfitList');
+
+          if (!container) {
+            container = new Node('FallbackLevelOutfitList');
+            container.parent = this.node;
+            container.setPosition(150, 35, 0);
+          }
+
+          var transform = container.getComponent(UITransform);
+
+          if (!transform) {
+            transform = container.addComponent(UITransform);
+          }
+
+          transform.setContentSize(760, 260);
+          this.levelOutfitContainer = container;
+          this.itemListContainer = container;
+          return container;
+        }
+
+        ensureTabContainer() {
+          if (this.tabContainer && this.tabContainer.isValid) {
+            return this.tabContainer;
+          }
+
+          var container = this.node.getChildByName('FallbackDressTabs');
+
+          if (!container) {
+            container = new Node('FallbackDressTabs');
+            container.parent = this.node;
+            container.setPosition(0, 240, 0);
+            var tabs = [['HAIR', 'Hair'], ['TOP', 'Top'], ['BOTTOM', 'Bottom'], ['SHOES', 'Shoes'], ['ACCESSORY', 'Acc']];
+
+            for (var i = 0; i < tabs.length; i++) {
+              var [name, text] = tabs[i];
+              var tabNode = new Node(name);
+              tabNode.parent = container;
+              tabNode.setPosition(-240 + i * 120, 0, 0);
+
+              var _transform = tabNode.addComponent(UITransform);
+
+              _transform.setContentSize(110, 42);
+
+              var label = tabNode.addComponent(Label);
+              label.string = text;
+              label.fontSize = 18;
+              label.color = new Color(180, 186, 196, 255);
+              this.ensureButton(tabNode, 110, 42);
+            }
+          }
+
+          var transform = container.getComponent(UITransform);
+
+          if (!transform) {
+            transform = container.addComponent(UITransform);
+          }
+
+          transform.setContentSize(620, 50);
+          this.tabContainer = container;
+          return container;
+        }
+
+        ensureItemListContainer() {
+          if (this.itemListContainer && this.itemListContainer.isValid) {
+            return this.itemListContainer;
+          }
+
+          var container = this.node.getChildByName('FallbackDressItemList');
+
+          if (!container) {
+            container = new Node('FallbackDressItemList');
+            container.parent = this.node;
+            container.setPosition(0, 40, 0);
+          }
+
+          var transform = container.getComponent(UITransform);
+
+          if (!transform) {
+            transform = container.addComponent(UITransform);
+          }
+
+          transform.setContentSize(620, 320);
+          this.itemListContainer = container;
+          return container;
+        }
+
+        createFallbackLabel(name, text, x, y, width, height, fontSize) {
+          var node = new Node(name);
+          node.parent = this.node;
+          node.setPosition(x, y, 0);
+          var transform = node.addComponent(UITransform);
+          transform.setContentSize(width, height);
+          var label = node.addComponent(Label);
+          label.string = text;
+          label.fontSize = fontSize;
+          label.color = new Color(235, 239, 245, 255);
+          return label;
         }
 
         ensureButton(node, width, height) {
@@ -626,6 +770,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             if (result.replaced) {
               console.log("[DressRoomPanel]   \u66FF\u6362\u4E86\u65E7\u88C5: " + result.replaced.id);
             }
+
+            this.refreshLevelOutfits();
           }
         } // ==========================================================
         // 预览刷新
@@ -642,8 +788,15 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
 
 
         refreshDollPreview() {
+          var _topOutfit$outfitColo;
+
+          this.ensureDollPreview();
           if (!this.dollPreview) return;
-          var currentDress = this.dressUpManager.getCurrentDress(); // 部位叠层顺序（后渲染的在上层）
+          var currentDress = this.dressUpManager.getCurrentDress();
+          var topOutfit = currentDress[(_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
+            error: Error()
+          }), DressPart) : DressPart).TOP];
+          this.drawFallbackPreview((_topOutfit$outfitColo = topOutfit == null ? void 0 : topOutfit.outfitColor) != null ? _topOutfit$outfitColo : new Color(245, 245, 238, 255)); // 部位叠层顺序（后渲染的在上层）
 
           var partOrder = [(_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
             error: Error()
@@ -681,6 +834,37 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             }
           });
         }
+
+        drawFallbackPreview(outfitColor) {
+          var graphics = this.previewGraphic;
+
+          if (!graphics) {
+            return;
+          }
+
+          graphics.clear();
+          graphics.fillColor = new Color(239, 207, 185, 255);
+          graphics.circle(0, 94, 34);
+          graphics.fill();
+          graphics.fillColor = new Color(76, 64, 58, 255);
+          graphics.rect(-32, 112, 64, 18);
+          graphics.fill();
+          graphics.fillColor = outfitColor;
+          graphics.moveTo(-58, 50);
+          graphics.lineTo(58, 50);
+          graphics.lineTo(78, -90);
+          graphics.lineTo(-78, -90);
+          graphics.close();
+          graphics.fill();
+          graphics.lineWidth = 4;
+          graphics.strokeColor = new Color(255, 255, 255, 210);
+          graphics.moveTo(-58, 50);
+          graphics.lineTo(58, 50);
+          graphics.lineTo(78, -90);
+          graphics.lineTo(-78, -90);
+          graphics.close();
+          graphics.stroke();
+        }
         /**
          * 刷新 Buff 和风格计分显示。
          *
@@ -692,49 +876,37 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         refreshBuffDisplay() {
           // ---- Buff 显示 ----
           if (this.buffLabel) {
+            var _currentOutfit$displa;
+
             var buffs = this.dressUpManager.getActiveBuffs();
+            var currentOutfit = this.dressUpManager.getCurrentDress()[(_crd && DressPart === void 0 ? (_reportPossibleCrUseOfDressPart({
+              error: Error()
+            }), DressPart) : DressPart).TOP];
+            var outfitName = (_currentOutfit$displa = currentOutfit == null ? void 0 : currentOutfit.displayName) != null ? _currentOutfit$displa : 'White Outfit';
 
             if (buffs.length === 0) {
-              this.buffLabel.string = '当前无 Buff';
+              this.buffLabel.string = "Current: " + outfitName + " | No Buff";
             } else {
               var buffNames = {
-                COIN_BONUS: '金币加成',
-                START_BOMB: '开局炸弹',
-                EXTRA_MOVE: '额外步数'
+                COIN_BONUS: 'Coin Bonus',
+                START_BOMB: 'Start Bomb',
+                EXTRA_MOVE: 'Extra Move'
               };
               var lines = buffs.map(b => {
                 var _buffNames$b$type;
 
                 return ((_buffNames$b$type = buffNames[b.type]) != null ? _buffNames$b$type : b.type) + ": +" + b.value;
               });
-              this.buffLabel.string = 'Buff: ' + lines.join(' | ');
+              this.buffLabel.string = "Current: " + outfitName + " | " + lines.join(' | ');
             }
           } // ---- 风格计分 ----
 
 
           if (this.styleScoreLabel) {
-            var styles = [(_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
+            var unlockedLevel = (_crd && MainGameFlow === void 0 ? (_reportPossibleCrUseOfMainGameFlow({
               error: Error()
-            }), StyleTag) : StyleTag).SWEET, (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).RETRO, (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CYBER, (_crd && StyleTag === void 0 ? (_reportPossibleCrUseOfStyleTag({
-              error: Error()
-            }), StyleTag) : StyleTag).CUTE];
-            var styleNames = {
-              SWEET: '甜美',
-              RETRO: '复古',
-              CYBER: '赛博',
-              CUTE: '可爱'
-            };
-
-            var _lines = styles.map(s => {
-              var score = this.dressUpManager.getStyleScore(s);
-              return styleNames[s] + ": " + score;
-            });
-
-            this.styleScoreLabel.string = '风格计分: ' + _lines.join(' | ');
+            }), MainGameFlow) : MainGameFlow).getInstance().getUnlockedOutfitLevel();
+            this.styleScoreLabel.string = "Outfits unlocked: " + unlockedLevel + "/5";
           }
         }
 

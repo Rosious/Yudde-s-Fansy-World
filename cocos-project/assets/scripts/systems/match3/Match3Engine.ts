@@ -81,73 +81,57 @@ export class Match3Engine {
     const cols = grid[0]?.length ?? 0;
     const matches: MatchGroup[] = [];
 
-    // 辅助：记录每个 cell 参与的匹配组引用
-    // key = "r,c", value = 该 cell 所属的匹配组列表
-    const cellMatches: Map<string, MatchGroup[]> = new Map();
+    const addRun = (
+      type: ElementType | null | undefined,
+      cells: Pos[],
+    ): void => {
+      if (!this.isMatchableType(type) || cells.length < 3) {
+        return;
+      }
 
-    const addCellMatch = (r: number, c: number, match: MatchGroup): void => {
-      const key = `${r},${c}`;
-      const list = cellMatches.get(key) ?? [];
-      list.push(match);
-      cellMatches.set(key, list);
+      matches.push({
+        cells: cells.map((cell) => ({ ...cell })),
+        type,
+        length: cells.length,
+      });
     };
 
     // ---- 横向扫描 ----
     for (let r = 0; r < rows; r++) {
-      let startCol = 0;
-      while (startCol < cols) {
-        const type = grid[r][startCol]?.type;
-        if (type === null) {
-          startCol++;
-          continue;
+      let runType: ElementType | null | undefined = undefined;
+      let runCells: Pos[] = [];
+
+      for (let c = 0; c < cols; c++) {
+        const type = grid[r]?.[c]?.type;
+        if (this.isMatchableType(type) && type === runType) {
+          runCells.push({ row: r, col: c });
+        } else {
+          addRun(runType, runCells);
+          runType = this.isMatchableType(type) ? type : undefined;
+          runCells = this.isMatchableType(type) ? [{ row: r, col: c }] : [];
         }
-        let endCol = startCol;
-        while (endCol + 1 < cols && grid[r][endCol + 1]?.type === type) {
-          endCol++;
-        }
-        const length = endCol - startCol + 1;
-        if (length >= 3) {
-          const cells: Pos[] = [];
-          for (let c = startCol; c <= endCol; c++) {
-            cells.push({ row: r, col: c });
-          }
-          const match: MatchGroup = { cells, type: type as ElementType, length };
-          matches.push(match);
-          for (let c = startCol; c <= endCol; c++) {
-            addCellMatch(r, c, match);
-          }
-        }
-        startCol = endCol + 1;
       }
+
+      addRun(runType, runCells);
     }
 
     // ---- 纵向扫描 ----
     for (let c = 0; c < cols; c++) {
-      let startRow = 0;
-      while (startRow < rows) {
-        const type = grid[startRow][c]?.type;
-        if (type === null) {
-          startRow++;
-          continue;
+      let runType: ElementType | null | undefined = undefined;
+      let runCells: Pos[] = [];
+
+      for (let r = 0; r < rows; r++) {
+        const type = grid[r]?.[c]?.type;
+        if (this.isMatchableType(type) && type === runType) {
+          runCells.push({ row: r, col: c });
+        } else {
+          addRun(runType, runCells);
+          runType = this.isMatchableType(type) ? type : undefined;
+          runCells = this.isMatchableType(type) ? [{ row: r, col: c }] : [];
         }
-        let endRow = startRow;
-        while (endRow + 1 < rows && grid[endRow + 1][c]?.type === type) {
-          endRow++;
-        }
-        const length = endRow - startRow + 1;
-        if (length >= 3) {
-          const cells: Pos[] = [];
-          for (let r = startRow; r <= endRow; r++) {
-            cells.push({ row: r, col: c });
-          }
-          const match: MatchGroup = { cells, type: type as ElementType, length };
-          matches.push(match);
-          for (let r = startRow; r <= endRow; r++) {
-            addCellMatch(r, c, match);
-          }
-        }
-        startRow = endRow + 1;
       }
+
+      addRun(runType, runCells);
     }
 
     // ---- 检测 T 型/L 型交叉 ----
@@ -518,6 +502,10 @@ export class Match3Engine {
     }
 
     return candidates;
+  }
+
+  private isMatchableType(type: ElementType | null | undefined): type is ElementType {
+    return type !== null && type !== undefined;
   }
 
   /**

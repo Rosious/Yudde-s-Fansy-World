@@ -136,6 +136,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
            * 刷新订单列表以移除已完成的订单。
            */
           this.onOrderCompleted = () => {
+            this.orderManager.generateOrders(1);
             this.refreshOrders();
           };
 
@@ -157,10 +158,11 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             error: Error()
           }), MainGameFlow) : MainGameFlow).getInstance();
           this.inventorySystem = mgf.inventorySystem;
-          this.orderManager = mgf.orderManager; // 初始化经济标签
+          this.orderManager = mgf.orderManager;
+          this.ensureFallbackUi(); // 初始化经济标签
 
-          this.updateGoldLabel(0);
-          this.updateFlowerLabel(0); // 监听订单完成事件 → 刷新列表
+          this.updateGoldLabel(this.orderManager.getTotalGoldEarned());
+          this.updateFlowerLabel(this.orderManager.getTotalFlowerEarned()); // 监听订单完成事件 → 刷新列表
 
           (_crd && eventBus === void 0 ? (_reportPossibleCrUseOfeventBus({
             error: Error()
@@ -214,13 +216,9 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
 
 
         refreshOrders() {
-          if (!this.orderListContainer || !this.orderCardPrefab) {
-            console.warn('[ShopPanel] orderListContainer 或 orderCardPrefab 未绑定！');
-            return;
-          } // 清空旧卡片
+          const orderListContainer = this.ensureOrderListContainer(); // 清空旧卡片
 
-
-          this.orderListContainer.removeAllChildren(); // 获取当前活跃订单
+          orderListContainer.removeAllChildren(); // 获取当前活跃订单
 
           const activeOrders = this.orderManager.getActiveOrders();
 
@@ -250,8 +248,15 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
         createOrderCard(order) {
           var _cardNode$getChildByN, _cardNode$getChildByN2, _cardNode$getChildByN3;
 
-          const cardNode = instantiate(this.orderCardPrefab);
-          cardNode.parent = this.orderListContainer; // ---- 顾客名称 ----
+          const orderListContainer = this.ensureOrderListContainer();
+          const cardNode = this.orderCardPrefab ? instantiate(this.orderCardPrefab) : this.createFallbackOrderCard();
+          cardNode.parent = orderListContainer;
+
+          if (!this.orderCardPrefab) {
+            const index = orderListContainer.children.length - 1;
+            cardNode.setPosition(0, 130 - index * 92, 0);
+          } // ---- 顾客名称 ----
+
 
           const nameLabel = (_cardNode$getChildByN = cardNode.getChildByName('NameLabel')) == null ? void 0 : _cardNode$getChildByN.getComponent(Label);
 
@@ -279,6 +284,80 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
           this.bindButtonClick(submitNode, () => {
             this.onSubmitOrder(order.orderId);
           }, 'SubmitBtn');
+        }
+
+        ensureFallbackUi() {
+          this.ensureOrderListContainer();
+
+          if (!this.goldLabel || !this.goldLabel.isValid) {
+            this.goldLabel = this.createFallbackLabel('FallbackGoldLabel', '金币: 0', -190, 260, 180, 32);
+          }
+
+          if (!this.flowerLabel || !this.flowerLabel.isValid) {
+            this.flowerLabel = this.createFallbackLabel('FallbackFlowerLabel', '花: 0', 190, 260, 180, 32);
+          }
+        }
+
+        ensureOrderListContainer() {
+          if (this.orderListContainer && this.orderListContainer.isValid) {
+            return this.orderListContainer;
+          }
+
+          let container = this.node.getChildByName('FallbackOrderList');
+
+          if (!container) {
+            container = new Node('FallbackOrderList');
+            container.parent = this.node;
+            container.setPosition(0, 40, 0);
+          }
+
+          let transform = container.getComponent(UITransform);
+
+          if (!transform) {
+            transform = container.addComponent(UITransform);
+          }
+
+          transform.setContentSize(520, 360);
+          this.orderListContainer = container;
+          return container;
+        }
+
+        createFallbackOrderCard() {
+          const cardNode = new Node('FallbackOrderCard');
+          const transform = cardNode.addComponent(UITransform);
+          transform.setContentSize(520, 82);
+          this.createFallbackLabelNode(cardNode, 'NameLabel', '', -170, 20, 160, 28, 20);
+          this.createFallbackLabelNode(cardNode, 'RequirementLabel', '', 35, 20, 260, 28, 16);
+          this.createFallbackLabelNode(cardNode, 'RewardLabel', '', -90, -22, 220, 28, 16);
+          const submitNode = new Node('SubmitBtn');
+          submitNode.parent = cardNode;
+          submitNode.setPosition(185, -18, 0);
+          const submitTransform = submitNode.addComponent(UITransform);
+          submitTransform.setContentSize(132, 42);
+          const submitLabel = submitNode.addComponent(Label);
+          submitLabel.string = 'Submit';
+          submitLabel.fontSize = 18;
+          submitLabel.color = new Color(255, 255, 255, 255);
+          this.ensureButton(submitNode, 132, 42);
+          return cardNode;
+        }
+
+        createFallbackLabel(name, text, x, y, width, height) {
+          const node = this.createFallbackLabelNode(this.node, name, text, x, y, width, height, 18);
+          return node.getComponent(Label);
+        }
+
+        createFallbackLabelNode(parent, name, text, x, y, width, height, fontSize) {
+          const node = new Node(name);
+          node.parent = parent;
+          node.setPosition(x, y, 0);
+          const transform = node.addComponent(UITransform);
+          transform.setContentSize(width, height);
+          const label = node.addComponent(Label);
+          label.string = text;
+          label.fontSize = fontSize;
+          label.color = new Color(235, 239, 245, 255);
+          return node;
         }
 
         bindButtonClick(buttonNode, handler, debugName) {

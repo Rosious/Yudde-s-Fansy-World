@@ -64,13 +64,21 @@
           "useSplashScreen": true,
           "bundleCommonChunk": false,
           "packAutoAtlas": true,
-          "startScene": "4a29fe02-2e41-4527-aae7-86e3ab8c709f",
+          "startScene": "28a9a6b8-cb60-468f-a6b3-fa01eb33fa68",
           "outputName": "web-desktop",
           "taskName": "web-desktop",
           "scenes": [
             {
-              "url": "db://assets/scenes/MainScene.scene",
-              "uuid": "4a29fe02-2e41-4527-aae7-86e3ab8c709f"
+              "url": "db://assets/scenes/MatchScene.scene",
+              "uuid": "28a9a6b8-cb60-468f-a6b3-fa01eb33fa68"
+            },
+            {
+              "url": "db://assets/scenes/ShopScene.scene",
+              "uuid": "9069e266-a741-4707-b703-cb879ec797d9"
+            },
+            {
+              "url": "db://assets/scenes/DressScene.scene",
+              "uuid": "6da35fe7-ea6e-446c-807a-b9c43942c01e"
             }
           ],
           "wasmCompressionMode": false,

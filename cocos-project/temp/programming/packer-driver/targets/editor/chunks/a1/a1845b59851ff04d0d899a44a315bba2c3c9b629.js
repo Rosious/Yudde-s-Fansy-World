@@ -123,118 +123,75 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
 
           const rows = grid.length;
           const cols = (_grid$0$length = (_grid$ = grid[0]) == null ? void 0 : _grid$.length) != null ? _grid$0$length : 0;
-          const matches = []; // 辅助：记录每个 cell 参与的匹配组引用
-          // key = "r,c", value = 该 cell 所属的匹配组列表
+          const matches = [];
 
-          const cellMatches = new Map();
+          const addRun = (type, cells) => {
+            if (!this.isMatchableType(type) || cells.length < 3) {
+              return;
+            }
 
-          const addCellMatch = (r, c, match) => {
-            var _cellMatches$get;
-
-            const key = `${r},${c}`;
-            const list = (_cellMatches$get = cellMatches.get(key)) != null ? _cellMatches$get : [];
-            list.push(match);
-            cellMatches.set(key, list);
+            matches.push({
+              cells: cells.map(cell => ({ ...cell
+              })),
+              type,
+              length: cells.length
+            });
           }; // ---- 横向扫描 ----
 
 
           for (let r = 0; r < rows; r++) {
-            let startCol = 0;
+            let runType = undefined;
+            let runCells = [];
 
-            while (startCol < cols) {
-              var _grid$r$startCol;
+            for (let c = 0; c < cols; c++) {
+              var _grid$r;
 
-              const type = (_grid$r$startCol = grid[r][startCol]) == null ? void 0 : _grid$r$startCol.type;
+              const type = (_grid$r = grid[r]) == null || (_grid$r = _grid$r[c]) == null ? void 0 : _grid$r.type;
 
-              if (type === null) {
-                startCol++;
-                continue;
+              if (this.isMatchableType(type) && type === runType) {
+                runCells.push({
+                  row: r,
+                  col: c
+                });
+              } else {
+                addRun(runType, runCells);
+                runType = this.isMatchableType(type) ? type : undefined;
+                runCells = this.isMatchableType(type) ? [{
+                  row: r,
+                  col: c
+                }] : [];
               }
-
-              let endCol = startCol;
-
-              while (endCol + 1 < cols && ((_grid$r = grid[r][endCol + 1]) == null ? void 0 : _grid$r.type) === type) {
-                var _grid$r;
-
-                endCol++;
-              }
-
-              const length = endCol - startCol + 1;
-
-              if (length >= 3) {
-                const cells = [];
-
-                for (let c = startCol; c <= endCol; c++) {
-                  cells.push({
-                    row: r,
-                    col: c
-                  });
-                }
-
-                const match = {
-                  cells,
-                  type: type,
-                  length
-                };
-                matches.push(match);
-
-                for (let c = startCol; c <= endCol; c++) {
-                  addCellMatch(r, c, match);
-                }
-              }
-
-              startCol = endCol + 1;
             }
+
+            addRun(runType, runCells);
           } // ---- 纵向扫描 ----
 
 
           for (let c = 0; c < cols; c++) {
-            let startRow = 0;
+            let runType = undefined;
+            let runCells = [];
 
-            while (startRow < rows) {
-              var _grid$startRow$c;
+            for (let r = 0; r < rows; r++) {
+              var _grid$r2;
 
-              const type = (_grid$startRow$c = grid[startRow][c]) == null ? void 0 : _grid$startRow$c.type;
+              const type = (_grid$r2 = grid[r]) == null || (_grid$r2 = _grid$r2[c]) == null ? void 0 : _grid$r2.type;
 
-              if (type === null) {
-                startRow++;
-                continue;
+              if (this.isMatchableType(type) && type === runType) {
+                runCells.push({
+                  row: r,
+                  col: c
+                });
+              } else {
+                addRun(runType, runCells);
+                runType = this.isMatchableType(type) ? type : undefined;
+                runCells = this.isMatchableType(type) ? [{
+                  row: r,
+                  col: c
+                }] : [];
               }
-
-              let endRow = startRow;
-
-              while (endRow + 1 < rows && ((_grid$c = grid[endRow + 1][c]) == null ? void 0 : _grid$c.type) === type) {
-                var _grid$c;
-
-                endRow++;
-              }
-
-              const length = endRow - startRow + 1;
-
-              if (length >= 3) {
-                const cells = [];
-
-                for (let r = startRow; r <= endRow; r++) {
-                  cells.push({
-                    row: r,
-                    col: c
-                  });
-                }
-
-                const match = {
-                  cells,
-                  type: type,
-                  length
-                };
-                matches.push(match);
-
-                for (let r = startRow; r <= endRow; r++) {
-                  addCellMatch(r, c, match);
-                }
-              }
-
-              startRow = endRow + 1;
             }
+
+            addRun(runType, runCells);
           } // ---- 检测 T 型/L 型交叉 ----
           // 若某 cell 同时出现在一个横向匹配组和一个纵向匹配组中，
           // 且两个匹配组的长度都 >= 3，则为交叉点。
@@ -655,6 +612,10 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
           }
 
           return candidates;
+        }
+
+        isMatchableType(type) {
+          return type !== null && type !== undefined;
         }
         /**
          * 特殊道具优先级：RAINBOW(3) > IRON(2) > SHUTTLE(1) > NONE(0)

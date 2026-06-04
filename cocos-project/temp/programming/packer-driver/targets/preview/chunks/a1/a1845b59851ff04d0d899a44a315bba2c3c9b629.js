@@ -125,118 +125,74 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
 
           var rows = grid.length;
           var cols = (_grid$0$length = (_grid$ = grid[0]) == null ? void 0 : _grid$.length) != null ? _grid$0$length : 0;
-          var matches = []; // 辅助：记录每个 cell 参与的匹配组引用
-          // key = "r,c", value = 该 cell 所属的匹配组列表
+          var matches = [];
 
-          var cellMatches = new Map();
+          var addRun = (type, cells) => {
+            if (!this.isMatchableType(type) || cells.length < 3) {
+              return;
+            }
 
-          var addCellMatch = (r, c, match) => {
-            var _cellMatches$get;
-
-            var key = r + "," + c;
-            var list = (_cellMatches$get = cellMatches.get(key)) != null ? _cellMatches$get : [];
-            list.push(match);
-            cellMatches.set(key, list);
+            matches.push({
+              cells: cells.map(cell => _extends({}, cell)),
+              type,
+              length: cells.length
+            });
           }; // ---- 横向扫描 ----
 
 
           for (var r = 0; r < rows; r++) {
-            var startCol = 0;
+            var runType = undefined;
+            var runCells = [];
 
-            while (startCol < cols) {
-              var _grid$r$startCol;
+            for (var c = 0; c < cols; c++) {
+              var _grid$r;
 
-              var type = (_grid$r$startCol = grid[r][startCol]) == null ? void 0 : _grid$r$startCol.type;
+              var type = (_grid$r = grid[r]) == null || (_grid$r = _grid$r[c]) == null ? void 0 : _grid$r.type;
 
-              if (type === null) {
-                startCol++;
-                continue;
+              if (this.isMatchableType(type) && type === runType) {
+                runCells.push({
+                  row: r,
+                  col: c
+                });
+              } else {
+                addRun(runType, runCells);
+                runType = this.isMatchableType(type) ? type : undefined;
+                runCells = this.isMatchableType(type) ? [{
+                  row: r,
+                  col: c
+                }] : [];
               }
-
-              var endCol = startCol;
-
-              while (endCol + 1 < cols && ((_grid$r = grid[r][endCol + 1]) == null ? void 0 : _grid$r.type) === type) {
-                var _grid$r;
-
-                endCol++;
-              }
-
-              var length = endCol - startCol + 1;
-
-              if (length >= 3) {
-                var cells = [];
-
-                for (var c = startCol; c <= endCol; c++) {
-                  cells.push({
-                    row: r,
-                    col: c
-                  });
-                }
-
-                var match = {
-                  cells,
-                  type: type,
-                  length
-                };
-                matches.push(match);
-
-                for (var _c = startCol; _c <= endCol; _c++) {
-                  addCellMatch(r, _c, match);
-                }
-              }
-
-              startCol = endCol + 1;
             }
+
+            addRun(runType, runCells);
           } // ---- 纵向扫描 ----
 
 
-          for (var _c2 = 0; _c2 < cols; _c2++) {
-            var startRow = 0;
+          for (var _c = 0; _c < cols; _c++) {
+            var _runType = undefined;
+            var _runCells = [];
 
-            while (startRow < rows) {
-              var _grid$startRow$_c;
+            for (var _r = 0; _r < rows; _r++) {
+              var _grid$_r;
 
-              var _type = (_grid$startRow$_c = grid[startRow][_c2]) == null ? void 0 : _grid$startRow$_c.type;
+              var _type = (_grid$_r = grid[_r]) == null || (_grid$_r = _grid$_r[_c]) == null ? void 0 : _grid$_r.type;
 
-              if (_type === null) {
-                startRow++;
-                continue;
+              if (this.isMatchableType(_type) && _type === _runType) {
+                _runCells.push({
+                  row: _r,
+                  col: _c
+                });
+              } else {
+                addRun(_runType, _runCells);
+                _runType = this.isMatchableType(_type) ? _type : undefined;
+                _runCells = this.isMatchableType(_type) ? [{
+                  row: _r,
+                  col: _c
+                }] : [];
               }
-
-              var endRow = startRow;
-
-              while (endRow + 1 < rows && ((_grid$_c = grid[endRow + 1][_c2]) == null ? void 0 : _grid$_c.type) === _type) {
-                var _grid$_c;
-
-                endRow++;
-              }
-
-              var _length = endRow - startRow + 1;
-
-              if (_length >= 3) {
-                var _cells = [];
-
-                for (var _r = startRow; _r <= endRow; _r++) {
-                  _cells.push({
-                    row: _r,
-                    col: _c2
-                  });
-                }
-
-                var _match = {
-                  cells: _cells,
-                  type: _type,
-                  length: _length
-                };
-                matches.push(_match);
-
-                for (var _r2 = startRow; _r2 <= endRow; _r2++) {
-                  addCellMatch(_r2, _c2, _match);
-                }
-              }
-
-              startRow = endRow + 1;
             }
+
+            addRun(_runType, _runCells);
           } // ---- 检测 T 型/L 型交叉 ----
           // 若某 cell 同时出现在一个横向匹配组和一个纵向匹配组中，
           // 且两个匹配组的长度都 >= 3，则为交叉点。
@@ -297,17 +253,17 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
           }; // 先处理 4 连和 5 连（基于单个匹配组）
 
 
-          for (var _match2 of matches) {
-            if (_match2.length === 4) {
+          for (var _match of matches) {
+            if (_match.length === 4) {
               // 4连：最后一个 cell 生成 SHUTTLE
-              var last = _match2.cells[_match2.cells.length - 1];
+              var last = _match.cells[_match.cells.length - 1];
               setSpecial(last.row, last.col, (_crd && SpecialType === void 0 ? (_reportPossibleCrUseOfSpecialType({
                 error: Error()
               }), SpecialType) : SpecialType).SHUTTLE);
-            } else if (_match2.length >= 5) {
+            } else if (_match.length >= 5) {
               // 5+连：中间 cell 生成 RAINBOW
-              var midIdx = Math.floor(_match2.cells.length / 2);
-              var mid = _match2.cells[midIdx];
+              var midIdx = Math.floor(_match.cells.length / 2);
+              var mid = _match.cells[midIdx];
               setSpecial(mid.row, mid.col, (_crd && SpecialType === void 0 ? (_reportPossibleCrUseOfSpecialType({
                 error: Error()
               }), SpecialType) : SpecialType).RAINBOW);
@@ -344,8 +300,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
 
           var clearedSet = new Set();
 
-          for (var _match3 of matches) {
-            for (var _cell of _match3.cells) {
+          for (var _match2 of matches) {
+            for (var _cell of _match2.cells) {
               clearedSet.add(_cell.row + "," + _cell.col);
             }
           } // 构建新棋盘
@@ -354,13 +310,13 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
           var newGrid = [];
           var clearedItemsMap = new Map();
 
-          for (var _r3 = 0; _r3 < rows; _r3++) {
+          for (var _r2 = 0; _r2 < rows; _r2++) {
             var newRow = [];
 
-            for (var _c3 = 0; _c3 < cols; _c3++) {
-              var _key = _r3 + "," + _c3;
+            for (var _c2 = 0; _c2 < cols; _c2++) {
+              var _key = _r2 + "," + _c2;
 
-              var original = grid[_r3][_c3];
+              var original = grid[_r2][_c2];
               var isCleared = clearedSet.has(_key);
               var special = specialPlan.get(_key);
 
@@ -369,8 +325,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
 
                 // 普通消除格：type 设为 null
                 newRow.push({
-                  row: _r3,
-                  col: _c3,
+                  row: _r2,
+                  col: _c2,
                   type: null,
                   special: (_crd && SpecialType === void 0 ? (_reportPossibleCrUseOfSpecialType({
                     error: Error()
@@ -384,8 +340,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
               } else if (isCleared && special) {
                 // 特殊道具生成格：保留 type，设置 special
                 newRow.push({
-                  row: _r3,
-                  col: _c3,
+                  row: _r2,
+                  col: _c2,
                   type: original.type,
                   special,
                   tangleCount: original.tangleCount,
@@ -450,11 +406,11 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
             } // 从底部向上填充
 
 
-            for (var _r4 = rows - 1; _r4 >= 0; _r4--) {
+            for (var _r3 = rows - 1; _r3 >= 0; _r3--) {
               if (nonEmpty.length > 0) {
                 var cell = nonEmpty.pop();
-                newGrid[_r4][c] = {
-                  row: _r4,
+                newGrid[_r3][c] = {
+                  row: _r3,
                   col: c,
                   type: cell.type,
                   special: cell.special,
@@ -464,8 +420,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
               } else {
                 // 顶部补充新棋子
                 var type = elementTypes[Math.floor(Math.random() * elementTypes.length)];
-                newGrid[_r4][c] = {
-                  row: _r4,
+                newGrid[_r3][c] = {
+                  row: _r3,
                   col: c,
                   type,
                   special: (_crd && SpecialType === void 0 ? (_reportPossibleCrUseOfSpecialType({
@@ -659,6 +615,10 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2"], fu
           }
 
           return candidates;
+        }
+
+        isMatchableType(type) {
+          return type !== null && type !== undefined;
         }
         /**
          * 特殊道具优先级：RAINBOW(3) > IRON(2) > SHUTTLE(1) > NONE(0)

@@ -997,7 +997,7 @@
       ]
     },
     "cce:/internal/x/prerequisite-imports": {
-      "mTimestamp": 37745.8525,
+      "mTimestamp": 10152159.6903,
       "chunkId": "6d8fd2b0177941b032ddc0733af48a561fb60657",
       "imports": [
         {
@@ -1855,7 +1855,7 @@
     },
     "file:///D:/Yudde-Demo/cocos-project/assets/scripts/systems/match3/Match3Engine.ts": {
       "mTimestamp": {
-        "mtime": 1780314844621.993,
+        "mtime": 1780554633937.191,
         "uuid": "67ea2dd0-3b18-4aad-9ada-b3cb24fd2c00"
       },
       "chunkId": "a1845b59851ff04d0d899a44a315bba2c3c9b629",
@@ -2313,7 +2313,7 @@
     },
     "file:///D:/Yudde-Demo/cocos-project/assets/scripts/ui/DressRoomPanel.ts": {
       "mTimestamp": {
-        "mtime": 1780314844627.4983,
+        "mtime": 1780554912743.52,
         "uuid": "d61a64ac-d832-4d53-a537-c5a85bcd82a1"
       },
       "chunkId": "0e74c6131cf27d436f5ab3d8e15e8be61c8290e3",
@@ -2332,11 +2332,11 @@
           "value": "cc",
           "loc": {
             "start": {
-              "line": 24,
+              "line": 25,
               "column": 7
             },
             "end": {
-              "line": 24,
+              "line": 25,
               "column": 11
             }
           }
@@ -2346,11 +2346,11 @@
           "resolved": "__unresolved_1",
           "loc": {
             "start": {
-              "line": 25,
+              "line": 26,
               "column": 29
             },
             "end": {
-              "line": 25,
+              "line": 26,
               "column": 45
             }
           }
@@ -2360,11 +2360,11 @@
           "resolved": "__unresolved_2",
           "loc": {
             "start": {
-              "line": 27,
+              "line": 28,
               "column": 25
             },
             "end": {
-              "line": 27,
+              "line": 28,
               "column": 43
             }
           }
@@ -2374,11 +2374,11 @@
           "resolved": "__unresolved_3",
           "loc": {
             "start": {
-              "line": 28,
+              "line": 29,
               "column": 47
             },
             "end": {
-              "line": 28,
+              "line": 29,
               "column": 62
             }
           }
@@ -2439,7 +2439,7 @@
     },
     "file:///D:/Yudde-Demo/cocos-project/assets/scripts/ui/MainGameFlow.ts": {
       "mTimestamp": {
-        "mtime": 1780314844627.4983,
+        "mtime": 1780555070542.236,
         "uuid": "b0c1d50f-c645-4b45-bdf4-0689110514fe"
       },
       "chunkId": "326668bdae72a411dedae9367c8d5eab81e2ac74",
@@ -2508,6 +2508,34 @@
               "column": 66
             }
           }
+        },
+        {
+          "value": "../core/EventBus",
+          "resolved": "__unresolved_4",
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 25
+            },
+            "end": {
+              "line": 13,
+              "column": 43
+            }
+          }
+        },
+        {
+          "value": "../core/types",
+          "resolved": "__unresolved_5",
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 26
+            },
+            "end": {
+              "line": 14,
+              "column": 41
+            }
+          }
         }
       ],
       "type": "esm",
@@ -2560,12 +2588,26 @@
             "url": "file:///D:/Yudde-Demo/cocos-project/assets/scripts/systems/dressup/DressUpManager.ts"
           },
           "messages": []
+        },
+        {
+          "resolved": {
+            "type": "module",
+            "url": "file:///D:/Yudde-Demo/cocos-project/assets/scripts/core/EventBus.ts"
+          },
+          "messages": []
+        },
+        {
+          "resolved": {
+            "type": "module",
+            "url": "file:///D:/Yudde-Demo/cocos-project/assets/scripts/core/types.ts"
+          },
+          "messages": []
         }
       ]
     },
     "file:///D:/Yudde-Demo/cocos-project/assets/scripts/ui/Match3GridComponent.ts": {
       "mTimestamp": {
-        "mtime": 1780314844629.0022,
+        "mtime": 1780554695335.0818,
         "uuid": "1b161f1e-0332-4881-8f11-260397d1225f"
       },
       "chunkId": "31d7d0a3c8c511c3fc92407f2e4bbe9ad165451b",
@@ -2648,6 +2690,20 @@
               "column": 47
             }
           }
+        },
+        {
+          "value": "./MainGameFlow",
+          "resolved": "__unresolved_5",
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 29
+            },
+            "end": {
+              "line": 34,
+              "column": 45
+            }
+          }
         }
       ],
       "type": "esm",
@@ -2707,12 +2763,19 @@
             "url": "file:///D:/Yudde-Demo/cocos-project/assets/scripts/ui/CellComponent.ts"
           },
           "messages": []
+        },
+        {
+          "resolved": {
+            "type": "module",
+            "url": "file:///D:/Yudde-Demo/cocos-project/assets/scripts/ui/MainGameFlow.ts"
+          },
+          "messages": []
         }
       ]
     },
     "file:///D:/Yudde-Demo/cocos-project/assets/scripts/ui/ShopPanel.ts": {
       "mTimestamp": {
-        "mtime": 1780314844630.01,
+        "mtime": 1780554722651.2185,
         "uuid": "cd8f6da8-f431-415e-816e-63472530702e"
       },
       "chunkId": "b7b1071246a6a5e01c3c922c6fab0a1d45d8cd0b",

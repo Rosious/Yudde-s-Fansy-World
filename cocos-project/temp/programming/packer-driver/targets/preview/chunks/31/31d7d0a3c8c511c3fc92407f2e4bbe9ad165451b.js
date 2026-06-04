@@ -1,7 +1,7 @@
-System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__unresolved_3", "__unresolved_4"], function (_export, _context) {
+System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__unresolved_3", "__unresolved_4", "__unresolved_5"], function (_export, _context) {
   "use strict";
 
-  var _reporterNs, _cclegacy, __checkObsolete__, __checkObsoleteInNamespace__, _decorator, Component, Node, Prefab, instantiate, Vec3, Color, Button, Sprite, SpriteFrame, UITransform, Graphics, tween, resources, CCFloat, CCInteger, Match3Engine, ElementType, SpecialType, GameEvent, eventBus, CellComponent, _dec, _dec2, _dec3, _dec4, _dec5, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _crd, ccclass, property, Match3GridComponent;
+  var _reporterNs, _cclegacy, __checkObsolete__, __checkObsoleteInNamespace__, _decorator, Component, Node, Prefab, instantiate, Vec3, Color, Button, Sprite, SpriteFrame, UITransform, Graphics, tween, resources, CCFloat, CCInteger, Match3Engine, ElementType, SpecialType, GameEvent, eventBus, CellComponent, MainGameFlow, _dec, _dec2, _dec3, _dec4, _dec5, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _crd, ccclass, property, Match3GridComponent;
 
   function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -45,6 +45,10 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
     _reporterNs.report("CellComponent", "./CellComponent", _context.meta, extras);
   }
 
+  function _reportPossibleCrUseOfMainGameFlow(extras) {
+    _reporterNs.report("MainGameFlow", "./MainGameFlow", _context.meta, extras);
+  }
+
   return {
     setters: [function (_unresolved_) {
       _reporterNs = _unresolved_;
@@ -78,6 +82,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
       eventBus = _unresolved_4.eventBus;
     }, function (_unresolved_5) {
       CellComponent = _unresolved_5.CellComponent;
+    }, function (_unresolved_6) {
+      MainGameFlow = _unresolved_6.MainGameFlow;
     }],
     execute: function () {
       _crd = true;
@@ -690,6 +696,7 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             _this.isProcessing = true;
             var currentGrid = grid;
             var cascades = 0;
+            var clearedAnyMatch = false;
             var MAX_CASCADES = 100; // 安全上限
 
             while (cascades < MAX_CASCADES) {
@@ -701,7 +708,8 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
                 break;
               }
 
-              cascades++; // 发射 MATCH_FOUND 事件
+              cascades++;
+              clearedAnyMatch = true; // 发射 MATCH_FOUND 事件
 
               (_crd && eventBus === void 0 ? (_reportPossibleCrUseOfeventBus({
                 error: Error()
@@ -730,6 +738,13 @@ System.register(["__unresolved_0", "cc", "__unresolved_1", "__unresolved_2", "__
             }), eventBus) : eventBus).emit((_crd && GameEvent === void 0 ? (_reportPossibleCrUseOfGameEvent({
               error: Error()
             }), GameEvent) : GameEvent).GRID_STABLE, currentGrid);
+
+            if (clearedAnyMatch) {
+              (_crd && MainGameFlow === void 0 ? (_reportPossibleCrUseOfMainGameFlow({
+                error: Error()
+              }), MainGameFlow) : MainGameFlow).getInstance().registerMatchLevelClear();
+            }
+
             _this.isProcessing = false;
           })();
         }
